@@ -1,0 +1,18 @@
+namespace ObiMenagement.Core.Models;
+
+public class RoadExpense
+{
+    public long Id { get; set; }
+    public ExpenseType ExpenseType { get; set; }
+    public decimal Quantity { get; set; }
+    public Payment Payment { get; set; }
+    public string Location { get; set; }
+    public County County { get; set; }
+}
+
+public class Payment
+{
+    public decimal Price { get; set; }
+    public Currency Currency { get; set; }
+    public PaymentTypeEnum PaymentTypeEnum { get; set; }
+}
