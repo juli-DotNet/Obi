@@ -1,3 +1,5 @@
+using System;
+
 namespace ObiMenagement.Core.Models;
 
 public class Person : BaseModel

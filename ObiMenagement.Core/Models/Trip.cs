@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ObiMenagement.Core.Models;
 
 public class Trip
