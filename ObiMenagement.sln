@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObiMenagement.Core", "ObiMenagement.Core\ObiMenagement.Core.csproj", "{3A8B0E5F-7419-4ACA-B9CF-712145E6EDB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObiMenagement.Infrastructure", "ObiMenagement.Infrastructure\ObiMenagement.Infrastructure.csproj", "{47D067D2-514F-4C62-86E0-B4FC0744F991}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObiMenagement.Web", "ObiMenagement.Web\ObiMenagement.Web.csproj", "{EB482280-497A-4D12-B0BB-09FC7702B3A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{3A8B0E5F-7419-4ACA-B9CF-712145E6EDB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A8B0E5F-7419-4ACA-B9CF-712145E6EDB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A8B0E5F-7419-4ACA-B9CF-712145E6EDB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47D067D2-514F-4C62-86E0-B4FC0744F991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47D067D2-514F-4C62-86E0-B4FC0744F991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47D067D2-514F-4C62-86E0-B4FC0744F991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47D067D2-514F-4C62-86E0-B4FC0744F991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB482280-497A-4D12-B0BB-09FC7702B3A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB482280-497A-4D12-B0BB-09FC7702B3A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB482280-497A-4D12-B0BB-09FC7702B3A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB482280-497A-4D12-B0BB-09FC7702B3A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
