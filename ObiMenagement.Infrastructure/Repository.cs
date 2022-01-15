@@ -8,6 +8,11 @@ namespace ObiMenagement.Infrastructure;
 
 public class Repository<T> : IRepository<T> where T : BaseModel
 {
+    //for migrations
+    public Repository()
+    {
+        
+    }
     private readonly ObiManagementDbContext db;
     private DbSet<T> dbSet;
 
