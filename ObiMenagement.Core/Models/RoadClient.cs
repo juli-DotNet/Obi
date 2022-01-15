@@ -1,6 +1,6 @@
 namespace ObiMenagement.Core.Models;
 
-public class RoadClient
+public class RoadClient:IdLongBaseModel
 {
     public Client Client { get; set; }
     public Location StartingLocation { get; set; }

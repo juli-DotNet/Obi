@@ -1,6 +1,6 @@
 namespace ObiMenagement.Core.Models;
 
-public class Currency : BaseModel
+public class Currency : IdBaseModel
 {
     public string Name { get; set; }
     public string Symbol { get; set; }

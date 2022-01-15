@@ -1,6 +1,6 @@
 namespace ObiMenagement.Core.Models;
 
-public class TruckBase : BaseModel
+public class TruckBase : IdBaseModel
 {
     public string Plate { get; set; }
     public string Color { get; set; }

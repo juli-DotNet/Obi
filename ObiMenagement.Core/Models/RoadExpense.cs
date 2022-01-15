@@ -1,8 +1,7 @@
 namespace ObiMenagement.Core.Models;
 
-public class RoadExpense
+public class RoadExpense:IdLongBaseModel
 {
-    public long Id { get; set; }
     public ExpenseType ExpenseType { get; set; }
     public decimal Quantity { get; set; }
     public Payment Payment { get; set; }

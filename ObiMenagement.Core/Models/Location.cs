@@ -1,6 +1,6 @@
 namespace ObiMenagement.Core.Models;
 
-public class Location : BaseModel
+public class Location : IdBaseModel
 {
     public string Name { get; set; }
     public decimal KmFromMainCompany { get; set; }
