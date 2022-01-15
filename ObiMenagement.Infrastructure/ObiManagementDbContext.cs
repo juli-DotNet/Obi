@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ObiMenagement.Core.Models;
+using ObiMenagement.Infrastructure.Configurations;
 
 namespace ObiMenagement.Infrastructure;
 
@@ -12,4 +14,11 @@ public class ObiManagementDbContext:IdentityDbContext
         
     }
     public DbSet<City> City { get; set; }
+    public DbSet<County> County { get; set; }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CountryEntityTypeConfiguration).Assembly);
+    }
+    
 }
