@@ -14,11 +14,12 @@ public class ObiManagementDbContext:IdentityDbContext
         
     }
     public DbSet<City> City { get; set; }
-    public DbSet<County> County { get; set; }
+    public DbSet<Country> Country { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CountryEntityTypeConfiguration).Assembly);
+        base.OnModelCreating(modelBuilder);
     }
     
 }

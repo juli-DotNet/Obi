@@ -4,9 +4,9 @@ using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Infrastructure.Configurations;
 
-public class CountryEntityTypeConfiguration: IEntityTypeConfiguration<County>
+public class CountryEntityTypeConfiguration: IEntityTypeConfiguration<Country>
 {
-    public void Configure(EntityTypeBuilder<County> builder)
+    public void Configure(EntityTypeBuilder<Country> builder)
     {
         builder
             .Property(b => b.Name).HasMaxLength(200)

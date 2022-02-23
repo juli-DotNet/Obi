@@ -4,7 +4,7 @@ using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class CountryService:BaseService,ICountryService
+public class CountryService : BaseService, ICountryService
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -12,44 +12,67 @@ public class CountryService:BaseService,ICountryService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<Response> CreateAsync(County model)
-    {
-       return Run(() => _unitOfWork.CountryRepository.InsertAsync(model).GetAwaiter().GetResult());
-        // var result=RunAsync( async () =>
-        // { 
-        //     if (string.IsNullOrWhiteSpace(model.Name))
-        //     {
-        //         throw new ObiException(ErrorMessages.NotNull(nameof(model.Name)));
-        //     }
-        //     if (  _unitOfWork.CountryRepository.AnyAsync(a=>a.Name==model.Name && a.IsValid).GetAwaiter().GetResult())
-        //     {
-        //         throw new ObiException(ErrorMessages.EntityExist(nameof(model.Name)));
-        //     }
-        //
-        //     _unitOfWork.CountryRepository.InsertAsync(model).GetAwaiter().GetResult();
-        //
-        // }).GetAwaiter().GetResult();
-        // return result;
 
+    public async Task<Response> CreateAsync(Country model)
+    {
+        var result = new Response();
+        if (string.IsNullOrWhiteSpace(model.Name))
+        {
+            result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.Name)));
+            return result;
+        }
+
+        if (await _unitOfWork.CountryRepository.AnyAsync(a => a.Name == model.Name && a.IsValid))
+        {
+            result.Exception = new ObiException(ErrorMessages.EntityExist(nameof(model.Name)));
+            return result;
+        }
+
+        await _unitOfWork.CountryRepository.InsertAsync(model);
+        await _unitOfWork.SaveChangesAsync();
+        return result;
     }
 
     public async Task<Response> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var result = new Response();
+        if (!await _unitOfWork.CountryRepository.AnyAsync(a => a.Id ==id && a.IsValid))
+        {
+            result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(id));
+            return result;
+        }
+
+        await _unitOfWork.CountryRepository.DeleteAsync(id);
+        await _unitOfWork.SaveChangesAsync();
+        return result;
     }
 
-    public async Task<Response> EditAsync(County model)
+    public async Task<Response> EditAsync(Country model)
     {
-        throw new NotImplementedException();
+        var result = new Response();
+        if (!await _unitOfWork.CountryRepository.AnyAsync(a => a.Id ==model.Id && a.IsValid))
+        {
+            result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(model.Id));
+            return result;
+        }
+
+        await _unitOfWork.CountryRepository.UpdateAsync(model);
+        await _unitOfWork.SaveChangesAsync();
+        return result;
     }
 
-    public  async Task<Response<IEnumerable<County>>> GetAllAsync()
+    public async Task<Response<IEnumerable<Country>>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var result = new Response<IEnumerable<Country>>();
+
+        result.Result = await _unitOfWork.CountryRepository.GetAllAsync();
+        return result;
     }
 
-    public async Task<Response<County>> GetByIdAsync(int id)
+    public async Task<Response<Country>> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var result = new Response<Country>();
+        result.Result = await _unitOfWork.CountryRepository.GetByIdAsync(id);
+        return result;
     }
 }

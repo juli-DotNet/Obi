@@ -12,7 +12,6 @@ public class BaseService
         try
         {
             method.Compile().Invoke();
-            result.IsSuccessful = true;
         }
 
         catch (Exception ex)
@@ -29,7 +28,6 @@ public class BaseService
         try
         {
             result.Result= method.Compile().Invoke();
-            result.IsSuccessful = true;
         }
 
         catch (Exception ex)
@@ -49,25 +47,25 @@ public class BaseService
 
     
     
-    protected async  Task<Response<T>> RunAsync<T>(Task<Expression<Func<Task<T>>>> method)
-    {
-        var result = new Response<T>();
-        try
-        {
-            result.Result =await (await method).Compile().Invoke();
-            result.IsSuccessful = true;
-        }
-
-        catch (Exception ex)
-        {
-            Logger.Instance.LogError(ex);
-            result.Exception = ex;
-            result.Result = default(T);
-        }
-
-        return result;
-    }
-    protected async  Task<Response> RunAsync(Task<Action> method)
+    // protected async  Task<Response<T>> RunAsync<T>(Task<Expression<Func<Task<T>>>> method)
+    // {
+    //     var result = new Response<T>();
+    //     try
+    //     {
+    //         result.Result =await (await method).Compile().Invoke();
+    //         result.IsSuccessful = true;
+    //     }
+    //
+    //     catch (Exception ex)
+    //     {
+    //         Logger.Instance.LogError(ex);
+    //         result.Exception = ex;
+    //         result.Result = default(T);
+    //     }
+    //
+    //     return result;
+    // }
+    public   Response RunAsync(Task<Action> method)
     {
         var result = new Response();
         try
@@ -75,16 +73,15 @@ public class BaseService
             // var methodCallExp = (MethodCallExpression)method.Body;
             // string methodName = methodCallExp.Method.Name;
             // Type type = methodCallExp.Method.DeclaringType;
-            await method;
-            result.IsSuccessful = true;
+            method.GetAwaiter().GetResult();
         }
-
+    
         catch (Exception ex)
         {
             Logger.Instance.LogError(ex);
             result.Exception = ex;
         }
-
+    
         return result;
     }
 

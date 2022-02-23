@@ -11,7 +11,17 @@ public class Response<T> : Response
 
 public class Response
 {
-    public bool IsSuccessful { get; set; }
+    public bool IsSuccessful {
+        get
+        {
+            if (Exception is null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+    }
     public Exception Exception { get; set; }
 
     public string Message

@@ -6,7 +6,7 @@ public class RoadExpense:IdLongBaseModel
     public decimal Quantity { get; set; }
     public Payment Payment { get; set; }
     public string Location { get; set; }
-    public County County { get; set; }
+    public Country Country { get; set; }
 }
 
 public class Payment
