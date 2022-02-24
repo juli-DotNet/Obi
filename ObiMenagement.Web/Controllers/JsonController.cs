@@ -17,7 +17,7 @@ public class JsonController : Controller
     public async Task<IActionResult> GetCountries(string search, int page)
     {
 
-        var serviceResponse = await _countryService.GetAllAsync();
+        var serviceResponse = await _countryService.GetAllWithoutMetadataAsync();
 
         var result = new JsonGenericModel();
         if (serviceResponse.IsSuccessful)

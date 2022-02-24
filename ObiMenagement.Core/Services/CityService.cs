@@ -17,6 +17,7 @@ public class CityService : BaseService, ICityService
         var result = new Response();
         if (await ValidateModel(model, result)) return result;
 
+        model.Country = await _unitOfWork.CountryRepository.FirstOrDefault(a => a.Id == model.Country.Id);
         await _unitOfWork.CityRepository.InsertAsync(model);
         await _unitOfWork.SaveChangesAsync();
         return result;
@@ -68,7 +69,7 @@ public class CityService : BaseService, ICityService
             return result;
         }
         if (await ValidateModel(model, result)) return result;
-
+        model.Country = await _unitOfWork.CountryRepository.FirstOrDefault(a => a.Id == model.Country.Id);
         await _unitOfWork.CityRepository.UpdateAsync(model);
         await _unitOfWork.SaveChangesAsync();
         return result;
@@ -78,14 +79,20 @@ public class CityService : BaseService, ICityService
     {
         var result = new Response<IEnumerable<City>>();
 
+        result.Result = await _unitOfWork.CityRepository.WhereAsync(a=>true, a=>a.Country);
+        return result;
+    }
+    public async Task<Response<IEnumerable<City>>> GetAllWithoutMetadataAsync()
+    {
+        var result = new Response<IEnumerable<City>>();
+
         result.Result = await _unitOfWork.CityRepository.GetAllAsync();
         return result;
     }
-
     public async Task<Response<City>> GetByIdAsync(int id)
     {
         var result = new Response<City>();
-        result.Result = await _unitOfWork.CityRepository.GetByIdAsync(id);
+        result.Result = await _unitOfWork.CityRepository.FirstOrDefault(a=>a.Id==id,a=>a.Country);
         return result;
     }
 }

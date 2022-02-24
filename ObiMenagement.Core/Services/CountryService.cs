@@ -75,4 +75,12 @@ public class CountryService : BaseService, ICountryService
         result.Result = await _unitOfWork.CountryRepository.GetByIdAsync(id);
         return result;
     }
+
+    public async Task<Response<IEnumerable<Country>>> GetAllWithoutMetadataAsync()
+    {
+        var result = new Response<IEnumerable<Country>>();
+
+        result.Result = await _unitOfWork.CountryRepository.GetAllAsync();
+        return result;
+    }
 }
