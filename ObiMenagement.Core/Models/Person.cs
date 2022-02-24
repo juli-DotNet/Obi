@@ -2,7 +2,7 @@ using System;
 
 namespace ObiMenagement.Core.Models;
 
-public class Person : BaseModel
+public class Person : IdBaseModel
 {
     public string Name { get; set; }
     public string LastName { get; set; }

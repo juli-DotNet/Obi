@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace ObiMenagement.Core.Models;
 
-public class Client : BaseModel
+public class Client : IdBaseModel
 {
     public string Name { get; set; }
     public string Notes { get; set; }

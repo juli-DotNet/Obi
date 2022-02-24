@@ -2,10 +2,8 @@ using System.Collections.Generic;
 
 namespace ObiMenagement.Core.Models;
 
-public class Trip
+public class Trip:IdLongBaseModel
 {
-    public long Id { get; set; }
-    public bool IsValid { get; set; }
     public int Number { get; set; }
     public TruckBase TruckBase { get; set; }
     public TruckContainer TruckContainer { get; set; }

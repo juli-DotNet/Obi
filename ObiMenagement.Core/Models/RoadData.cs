@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace ObiMenagement.Core.Models;
 
-public class RoadData
+public class RoadData:IdLongBaseModel
 {
-    public long Id { get; set; }
-    public bool IsValid { get; set; }
     public TruckBase TruckBase { get; set; }
     public TruckContainer TruckContainer { get; set; }
     public DateTime StartingDate { get; set; }

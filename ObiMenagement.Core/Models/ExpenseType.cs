@@ -1,6 +1,6 @@
 namespace ObiMenagement.Core.Models;
 
-public class ExpenseType:BaseModel
+public class ExpenseType:IdBaseModel
 {
     public string Name { get; set; }
     public Payment DefaultPayment { get; set; }

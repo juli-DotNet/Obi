@@ -1,6 +1,6 @@
 namespace ObiMenagement.Core.Models;
 
-public class County:BaseModel
+public class Country:IdBaseModel
 {
     public string Name { get; set; }
 }
