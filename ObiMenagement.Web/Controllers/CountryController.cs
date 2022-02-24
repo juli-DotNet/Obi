@@ -119,7 +119,7 @@ public class CountryController : Controller
     public async Task<IActionResult> Delete(int id)
     {
 
-        var response = await countryService.DeleteAsync(id);
+       var response = await countryService.DeleteAsync(id);
         return Json(new GenericViewModel
         {
             IsSuccessful = response.IsSuccessful,
