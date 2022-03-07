@@ -23,6 +23,8 @@ public class CurrencyController : Controller
             Id = model.Id,
             Name = model.Name,
             IsValid = true,
+            IsDefault = model.IsDefault,
+            Symbol = model.Symbol,
             Country = new Country()
             {
                 Id = model.CountryId
@@ -35,8 +37,10 @@ public class CurrencyController : Controller
         {
             Id = model.Id,
             Name = model.Name,
-            CountryId = model.Country.Id,
-            Country = model.Country.Name
+            CountryId = model.Country?.Id??0,
+            Country = model.Country?.Name??"",
+            Symbol = model.Symbol,
+            IsDefault = model.IsDefault
         };
     }
     

@@ -1,32 +1,42 @@
-﻿@model CityViewModel
+﻿@model CurrencyViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<partial name="_header" />
+<partial name="_header"/>
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
-            <input asp-for="Id" hidden class="form-control" />
+            <input asp-for="Id" hidden class="form-control"/>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CountryName" class="control-label"></label>
+                <label asp-for="IsDefault" class="control-label"></label>
+                <input asp-for="IsDefault" class="form-control"/>
+                <span asp-validation-for="IsDefault" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Symbol" class="control-label"></label>
+                <input asp-for="Symbol" class="form-control"/>
+                <span asp-validation-for="Symbol" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
                 <select asp-for="CountryId" class="form-control selectAdd">
-                    <option selected value="@Model.CountryId">@Model.CountryName</option>
+                    <option selected value="@Model.CountryId">@Model.Country</option>
                 </select>
                 <span asp-validation-for="CountryId" class="text-danger"></span>
-                <input asp-for="CountryName" value="a" hidden />
+                <input asp-for="Country" value="a" hidden/>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success" />
+                <input type="submit" value="Save" class="btn btn-success"/>
                 <a asp-action="Delete" asp-route-id="@Model.Id" data-bs-toggle="modal" data-bs-target="#confirm-delete" class="btn btn-danger delete">Delete </a>
             </div>
         </form>
@@ -53,9 +63,8 @@
 
 @section Scripts{
 
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
 
 
     <script>
@@ -109,4 +118,3 @@
 
     </script>
 }
-
