@@ -14,6 +14,12 @@ public class UnitOfWork : IUnitOfWork
 
     public IRepository<City> CityRepository =>new Repository<City>(_context);
     public IRepository<Country> CountryRepository =>new Repository<Country>(_context);
+    public IRepository<Currency> CurrencyRepository =>new Repository<Currency>(_context);
+    public IRepository<TruckBase> TruckBaseRepository =>new Repository<TruckBase>(_context);
+    public IRepository<TruckContainer> TruckContainerRepository =>new Repository<TruckContainer>(_context);
+    public IRepository<Location> LocationRepository =>new Repository<Location>(_context);
+    public IRepository<Person> PersonRepository =>new Repository<Person>(_context);
+    public IRepository<Employee> EmployeeRepository =>new Repository<Employee>(_context);
 
     public async Task SaveChangesAsync()
     {

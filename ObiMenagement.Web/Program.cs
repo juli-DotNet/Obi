@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ObiMenagement.Core.Interfaces;
+using ObiMenagement.Core.Models;
 using ObiMenagement.Core.Services;
 using ObiMenagement.Infrastructure;
 
@@ -18,6 +19,12 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+builder.Services.AddScoped<ILocationService, LocationService>();
+builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<ITrackBaseService, TrackBaseService>();
+builder.Services.AddScoped<ITrackContainerService, TrackContainerService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

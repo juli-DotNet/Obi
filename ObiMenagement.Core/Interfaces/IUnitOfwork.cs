@@ -6,5 +6,11 @@ public interface IUnitOfWork
 {
     IRepository<City> CityRepository { get;  }
     IRepository<Country> CountryRepository { get;  }
+    IRepository<Currency> CurrencyRepository { get;  }
+    IRepository<TruckBase> TruckBaseRepository { get;  }
+    IRepository<TruckContainer> TruckContainerRepository { get;  }
+    IRepository<Location> LocationRepository { get;  }
+    IRepository<Person> PersonRepository { get;  }
+    IRepository<Employee> EmployeeRepository { get;  }
     Task SaveChangesAsync();
 }

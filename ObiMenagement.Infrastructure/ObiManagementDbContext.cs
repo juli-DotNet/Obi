@@ -20,6 +20,7 @@ public class ObiManagementDbContext:IdentityDbContext
     public DbSet<Person> Person { get; set; }
     public DbSet<TruckBase> TruckBase { get; set; }
     public DbSet<TruckContainer> TruckContainer { get; set; }
+    public DbSet<Location> Location { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
