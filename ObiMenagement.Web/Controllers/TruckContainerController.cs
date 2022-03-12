@@ -5,44 +5,37 @@ using ObiMenagement.Web.Models;
 
 namespace ObiMenagement.Web.Controllers;
 
-public class LocationController : Controller
-{
-    private readonly ILocationService _locationService;
+public class TruckContainerController : Controller
+{ 
+    private readonly ITrackContainerService _trackContainerService;
 
-    public LocationController(ILocationService locationService)
+    public TruckContainerController(ITrackContainerService trackContainerService)
     {
-        this._locationService = locationService;
+        this._trackContainerService = trackContainerService;
     }
 
     #region Parse
 
-    Location Parse(LocationViewModel model)
+    TruckContainer Parse(TruckContainerViewModel model)
     {
-        return new Location()
+        return new TruckContainer()
         {
             Id = model.Id,
-            Name = model.Name,
-            IsValid = true,
-            KmFromMainCompany = model.KmFromMainCompany,
-            Country = new Country()
-            {
-                Id = model.CountryId
-            },
-            City=new City { Id=model.CityId}
+            Color=model.Color,
+            IsValid=true,
+            Description=model.Description,
+            Plate=model.Plate
 
         };
     }
-    LocationViewModel Parse(Location model)
+    TruckContainerViewModel Parse(TruckContainer model)
     {
-        return new LocationViewModel()
+        return new TruckContainerViewModel()
         {
             Id = model.Id,
-            Name = model.Name,
-            CountryId = model.Country?.Id ?? 0,
-            Country = model.Country?.Name ?? "",
-            City=model.City?.Name??"",
-            CityId=model.City?.Id??0,
-            KmFromMainCompany = model.KmFromMainCompany,
+            Color = model.Color,
+            Description = model.Description,
+            Plate = model.Plate
         };
     }
 
@@ -50,7 +43,7 @@ public class LocationController : Controller
     #endregion
     public async Task<IActionResult> Index()
     {
-        var result = await _locationService.GetAllAsync();
+        var result = await _trackContainerService.GetAllAsync();
         if (!result.IsSuccessful)
         {
             ModelState.AddModelError("", result.Message);
@@ -60,18 +53,18 @@ public class LocationController : Controller
 
     public IActionResult Create()
     {
-        var model = new LocationViewModel();
+        var model = new TruckContainerViewModel();
         return View(model);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(LocationViewModel model)
+    public async Task<IActionResult> Create(TruckContainerViewModel model)
     {
         if (ModelState.IsValid)
         {
             model.Id = 0;
-            var result = await _locationService.CreateAsync(Parse(model));
+            var result = await _trackContainerService.CreateAsync(Parse(model));
             if (!result.IsSuccessful)
             {
                 ModelState.AddModelError("", result.Message);
@@ -86,23 +79,23 @@ public class LocationController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var result = await _locationService.GetByIdAsync(id);
+        var result = await _trackContainerService.GetByIdAsync(id);
 
         if (!result.IsSuccessful)
         {
             ModelState.AddModelError("", result.Message);
-            return View(new LocationViewModel());
+            return View(new TruckContainerViewModel());
         }
 
         return View(Parse(result.Result));
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(LocationViewModel model)
+    public async Task<IActionResult> Edit(TruckContainerViewModel model)
     {
         if (ModelState.IsValid)
         {
-            var result = await _locationService.EditAsync(Parse(model));
+            var result = await _trackContainerService.EditAsync(Parse(model));
             if (!result.IsSuccessful)
             {
                 ModelState.AddModelError("", result.Message);
@@ -116,18 +109,18 @@ public class LocationController : Controller
     }
     public async Task<IActionResult> Details(int id)
     {
-        var response = await _locationService.GetByIdAsync(id);
+        var response = await _trackContainerService.GetByIdAsync(id);
 
         if (!response.IsSuccessful)
         {
             ModelState.AddModelError("", response.Message);
-            return View(new LocationViewModel());
+            return View(new TruckContainerViewModel());
         }
         return View(Parse(response.Result));
     }
     public async Task<IActionResult> Delete(int id)
     {
-        var response = await _locationService.DeleteAsync(id);
+        var response = await _trackContainerService.DeleteAsync(id);
         return Json(new GenericViewModel
         {
             IsSuccessful = response.IsSuccessful,

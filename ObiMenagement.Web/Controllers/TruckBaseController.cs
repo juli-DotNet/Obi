@@ -5,44 +5,37 @@ using ObiMenagement.Web.Models;
 
 namespace ObiMenagement.Web.Controllers;
 
-public class LocationController : Controller
+public class TruckBaseController : Controller
 {
-    private readonly ILocationService _locationService;
+    private readonly ITrackBaseService _trackBaseService;
 
-    public LocationController(ILocationService locationService)
+    public TruckBaseController(ITrackBaseService trackBaseService)
     {
-        this._locationService = locationService;
+        this._trackBaseService = trackBaseService;
     }
 
     #region Parse
 
-    Location Parse(LocationViewModel model)
+    TruckBase Parse(TrackBaseViewModel model)
     {
-        return new Location()
+        return new TruckBase()
         {
             Id = model.Id,
-            Name = model.Name,
+            Plate = model.Plate,
+            Color = model.Color,
+            Description = model.Description,
             IsValid = true,
-            KmFromMainCompany = model.KmFromMainCompany,
-            Country = new Country()
-            {
-                Id = model.CountryId
-            },
-            City=new City { Id=model.CityId}
 
         };
     }
-    LocationViewModel Parse(Location model)
+    TrackBaseViewModel Parse(TruckBase model)
     {
-        return new LocationViewModel()
+        return new TrackBaseViewModel()
         {
             Id = model.Id,
-            Name = model.Name,
-            CountryId = model.Country?.Id ?? 0,
-            Country = model.Country?.Name ?? "",
-            City=model.City?.Name??"",
-            CityId=model.City?.Id??0,
-            KmFromMainCompany = model.KmFromMainCompany,
+            Plate = model.Plate,
+            Color = model.Color,
+            Description = model.Description
         };
     }
 
@@ -50,7 +43,7 @@ public class LocationController : Controller
     #endregion
     public async Task<IActionResult> Index()
     {
-        var result = await _locationService.GetAllAsync();
+        var result = await _trackBaseService.GetAllAsync();
         if (!result.IsSuccessful)
         {
             ModelState.AddModelError("", result.Message);
@@ -60,18 +53,18 @@ public class LocationController : Controller
 
     public IActionResult Create()
     {
-        var model = new LocationViewModel();
+        var model = new TrackBaseViewModel();
         return View(model);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(LocationViewModel model)
+    public async Task<IActionResult> Create(TrackBaseViewModel model)
     {
         if (ModelState.IsValid)
         {
             model.Id = 0;
-            var result = await _locationService.CreateAsync(Parse(model));
+            var result = await _trackBaseService.CreateAsync(Parse(model));
             if (!result.IsSuccessful)
             {
                 ModelState.AddModelError("", result.Message);
@@ -86,23 +79,23 @@ public class LocationController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        var result = await _locationService.GetByIdAsync(id);
+        var result = await _trackBaseService.GetByIdAsync(id);
 
         if (!result.IsSuccessful)
         {
             ModelState.AddModelError("", result.Message);
-            return View(new LocationViewModel());
+            return View(new TrackBaseViewModel());
         }
 
         return View(Parse(result.Result));
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(LocationViewModel model)
+    public async Task<IActionResult> Edit(TrackBaseViewModel model)
     {
         if (ModelState.IsValid)
         {
-            var result = await _locationService.EditAsync(Parse(model));
+            var result = await _trackBaseService.EditAsync(Parse(model));
             if (!result.IsSuccessful)
             {
                 ModelState.AddModelError("", result.Message);
@@ -116,18 +109,18 @@ public class LocationController : Controller
     }
     public async Task<IActionResult> Details(int id)
     {
-        var response = await _locationService.GetByIdAsync(id);
+        var response = await _trackBaseService.GetByIdAsync(id);
 
         if (!response.IsSuccessful)
         {
             ModelState.AddModelError("", response.Message);
-            return View(new LocationViewModel());
+            return View(new TrackBaseViewModel());
         }
         return View(Parse(response.Result));
     }
     public async Task<IActionResult> Delete(int id)
     {
-        var response = await _locationService.DeleteAsync(id);
+        var response = await _trackBaseService.DeleteAsync(id);
         return Json(new GenericViewModel
         {
             IsSuccessful = response.IsSuccessful,
