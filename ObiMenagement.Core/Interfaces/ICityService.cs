@@ -5,5 +5,5 @@ namespace ObiMenagement.Core.Interfaces;
 
 public interface ICityService:ICrudService<City>
 {
-    Task<Response<IEnumerable<City>>> GetAllWithoutMetadataAsync();
+    Task<Response<IEnumerable<City>>> GetAllWithoutMetadataAsync(long countryID);
 }

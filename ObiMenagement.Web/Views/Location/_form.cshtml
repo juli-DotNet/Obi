@@ -1,0 +1,36 @@
+@model LocationViewModel
+            <input asp-for="Id" hidden />
+            <input asp-for="Country" value="a" hidden />
+            <input asp-for="City" value="a" hidden />
+         <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KmFromMainCompany" class="control-label"></label>
+                <input asp-for="KmFromMainCompany" class="form-control" />
+                <span asp-validation-for="KmFromMainCompany" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <select asp-for="CityId" class="form-control selectAdd">
+                     @if (Model.CityId>0)
+                     {
+                          <option selected value="@Model.CityId">@Model.City</option>
+                     }    
+                   
+
+                </select>
+                <span asp-validation-for="CityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <select asp-for="CountryId" class="form-control selectAdd">
+                      @if (Model.CountryId>0)
+                     {
+                          <option selected value="@Model.CountryId">@Model.Country</option>
+                     }    
+                </select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+            </div>

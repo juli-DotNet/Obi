@@ -82,11 +82,11 @@ public class CityService : BaseService, ICityService
         result.Result = await _unitOfWork.CityRepository.WhereAsync(a=>true, a=>a.Country);
         return result;
     }
-    public async Task<Response<IEnumerable<City>>> GetAllWithoutMetadataAsync()
+    public async Task<Response<IEnumerable<City>>> GetAllWithoutMetadataAsync(long countryId)
     {
         var result = new Response<IEnumerable<City>>();
 
-        result.Result = await _unitOfWork.CityRepository.GetAllAsync();
+        result.Result = await _unitOfWork.CityRepository.WhereAsync(a => a.Country.Id == countryId);
         return result;
     }
     public async Task<Response<City>> GetByIdAsync(int id)
