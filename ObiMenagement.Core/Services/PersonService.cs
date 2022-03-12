@@ -30,7 +30,7 @@ public class PersonService : BaseService, IPersonService
             result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.PersonalNumber)));
             return true;
         }
-        if (!await _unitOfWork.PersonRepository.AnyAsync(a => a.PersonalNumber ==model.PersonalNumber && a.IsValid))
+        if (await _unitOfWork.PersonRepository.AnyAsync(a => a.PersonalNumber ==model.PersonalNumber && a.IsValid))
         {
             result.Exception = new ObiException(ErrorMessages.EntityExist(model.PersonalNumber));
             return true;

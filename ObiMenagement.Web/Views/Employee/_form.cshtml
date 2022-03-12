@@ -1,0 +1,43 @@
+@model EmployeeViewModel
+
+<input asp-for="Id" hidden />
+<input asp-for="Person" value="a" hidden />
+<input asp-for="DefaultTruckBase" value="a" hidden />
+
+<div class="form-group">
+    <label asp-for="Person" class="control-label"></label>
+    <select asp-for="PersonID" class="form-control selectAdd">
+        @if (Model.PersonID > 0)
+        {
+            <option selected value="@Model.PersonID">@Model.Person</option>
+        }
+    </select>
+    <span asp-validation-for="PersonID" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="StartingDate" class="control-label"></label>
+    <input asp-for="StartingDate" class="form-control" />
+    <span asp-validation-for="StartingDate" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EndingDate" class="control-label"></label>
+    <input asp-for="EndingDate" class="form-control"/>
+    <span asp-validation-for="EndingDate" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="LeaveNote" class="control-label"></label>
+    <textarea asp-for="LeaveNote" class="form-control"></textarea>
+    <span asp-validation-for="LeaveNote" class="text-danger"></span>
+</div>
+
+
+<div class="form-group">
+    <label asp-for="DefaultTruckBase" class="control-label"></label>
+    <select asp-for="DefaultTruckBaseId" class="form-control selectAdd">
+        @if (Model.DefaultTruckBaseId > 0)
+        {
+            <option selected value="@Model.DefaultTruckBaseId">@Model.DefaultTruckBase</option>
+        }
+    </select>
+    <span asp-validation-for="DefaultTruckBaseId" class="text-danger"></span>
+</div>

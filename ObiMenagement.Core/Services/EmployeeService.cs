@@ -19,6 +19,8 @@ public class EmployeeService : BaseService, IEmployeeService
             result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.Person)));
             return true;
         }
+        model.Person = await _unitOfWork.PersonRepository.FirstOrDefault(a => a.Id == model.Person.Id);
+        model.DefaultTruckBase = await _unitOfWork.TruckBaseRepository.FirstOrDefault(a => a.Id == model.DefaultTruckBase.Id);
 
         return false;
     }
@@ -98,7 +100,7 @@ public class EmployeeService : BaseService, IEmployeeService
 
         try
         {
-            result.Result = await _unitOfWork.EmployeeRepository.WhereAsync(a => true,a=>a.Person);
+            result.Result = await _unitOfWork.EmployeeRepository.WhereAsync(a => true,a=>a.Person,a=>a.DefaultTruckBase);
         }
         catch (Exception e)
         {
@@ -114,7 +116,7 @@ public class EmployeeService : BaseService, IEmployeeService
 
         try
         {
-            result.Result = await _unitOfWork.EmployeeRepository.FirstOrDefault(a =>a.Id==id,a=>a.Person);
+            result.Result = await _unitOfWork.EmployeeRepository.FirstOrDefault(a =>a.Id==id,a=>a.Person,a=>a.DefaultTruckBase);
         }
         catch (Exception e)
         {

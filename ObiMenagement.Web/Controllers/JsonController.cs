@@ -9,11 +9,15 @@ public class JsonController : Controller
 {
     private readonly ICountryService _countryService;
     private readonly ICityService _cityService;
+    private readonly IPersonService _personService;
+    private readonly ITrackBaseService _trackBaseService;
 
-    public JsonController(ICountryService countryService,ICityService cityService)
+    public JsonController(ICountryService countryService,ICityService cityService,IPersonService personService,ITrackBaseService trackBaseService)
     {
         _countryService = countryService;
         this._cityService = cityService;
+        this._personService = personService;
+        this._trackBaseService = trackBaseService;
     }
     [HttpGet]
     public async Task<IActionResult> GetCountries(string search, int page)
@@ -54,6 +58,62 @@ public class JsonController : Controller
         return Json(result);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetPersons(string search, int page)
+    {
+
+        var serviceResponse = await _personService.GetAllWithoutMetadataAsync();
+
+        var result = new JsonGenericModel();
+        if (serviceResponse.IsSuccessful)
+        {
+            result.IsSuccessful = true;
+            result.Items = serviceResponse.Result.Select(a => Parse(a));
+        }
+        else
+        {
+            result.ErrorMessage = serviceResponse.Message;
+        }
+
+        return Json(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetTruckBases(string search, int page)
+    {
+
+        var serviceResponse = await _trackBaseService.GetAllAsync();
+
+        var result = new JsonGenericModel();
+        if (serviceResponse.IsSuccessful)
+        {
+            result.IsSuccessful = true;
+            result.Items = serviceResponse.Result.Select(a => Parse(a));
+        }
+        else
+        {
+            result.ErrorMessage = serviceResponse.Message;
+        }
+
+        return Json(result);
+    }
+
+    private SelectDataDTO Parse(Person model)
+    {
+        return new SelectDataDTO()
+        {
+            Id = model.Id.ToString(),
+            Text = model.Name
+        };
+    }
+    private SelectDataDTO Parse(TruckBase model)
+    {
+        return new SelectDataDTO()
+        {
+            Id = model.Id.ToString(),
+            Text = model.Plate
+        };
+    }
     private SelectDataDTO Parse(City model)
     {
         return new SelectDataDTO()
