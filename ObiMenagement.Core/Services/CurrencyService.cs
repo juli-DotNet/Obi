@@ -31,7 +31,7 @@ public class CurrencyService : BaseService, ICurrencyService
         }
 
 
-        if (await _unitOfWork.CurrencyRepository.AnyAsync(a => a.Name == model.Name && a.IsValid))
+        if (model.Id==0&& await _unitOfWork.CurrencyRepository.AnyAsync(a => a.Name == model.Name && a.IsValid))
         {
             result.Exception = new ObiException(ErrorMessages.EntityExist(nameof(model.Name)));
             return true;
