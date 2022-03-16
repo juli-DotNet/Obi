@@ -1,18 +1,19 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class EmployeeService : BaseService, IEmployeeService
+public class EmployeeService : BaseService<Employee>, IEmployeeService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public EmployeeService(IUnitOfWork unitOfWork)
+    public EmployeeService(IUnitOfWork unitOfWork,ILogger<EmployeeService> logger):base(unitOfWork,unitOfWork.EmployeeRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }
-    private async Task<bool> ValidateModel(Employee model, Response result)
+    protected override async Task<bool> ValidateModel(Employee model, Response result)
     {
         if (model.Person is null)
         {

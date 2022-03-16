@@ -1,18 +1,19 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class LocationService : BaseService, ILocationService
+public class LocationService : BaseService<Location>, ILocationService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public LocationService(IUnitOfWork unitOfWork)
+    public LocationService(IUnitOfWork unitOfWork,ILogger<LocationService> logger):base(unitOfWork,unitOfWork.LocationRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }
-    private async Task<bool> ValidateModel(Location model, Response result)
+    protected override async Task<bool> ValidateModel(Location model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Name))
         {

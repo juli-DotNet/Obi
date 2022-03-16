@@ -1,14 +1,15 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class PersonService : BaseService, IPersonService
+public class PersonService : BaseService<Person>, IPersonService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    private async Task<bool> ValidateModel(Person model, Response result)
+    protected override async Task<bool> ValidateModel(Person model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Name))
         {
@@ -38,7 +39,7 @@ public class PersonService : BaseService, IPersonService
 
         return false;
     }
-    public PersonService(IUnitOfWork unitOfWork)
+    public PersonService(IUnitOfWork unitOfWork,ILogger<PersonService> logger):base(unitOfWork,unitOfWork.PersonRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }
