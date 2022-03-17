@@ -9,10 +9,3 @@ public class RoadExpense:IdLongBaseModel
     public string Note { get; set; }
     public Country Country { get; set; }
 }
-
-public class Payment
-{
-    public decimal Price { get; set; }
-    public Currency Currency { get; set; }
-    public PaymentTypeEnum PaymentTypeEnum { get; set; }
-}
