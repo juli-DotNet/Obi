@@ -93,7 +93,7 @@ public abstract class BaseService<T> where T : IdBaseModel
         return result;
     }
 
-    public virtual async Task<Response<IEnumerable<T>>> GetAllAsync()
+    public virtual async Task<Response<IEnumerable<T>>> GetAllAsync(string search = null)
     {
         var result = new Response<IEnumerable<T>>();
 
@@ -303,7 +303,7 @@ public abstract class LongBaseService<T> where T : IdLongBaseModel
         return result;
     }
 
-    public virtual async Task<Response<IEnumerable<T>>> GetAllAsync()
+    public virtual async Task<Response<IEnumerable<T>>> GetAllAsync(string search = null)
     {
         var result = new Response<IEnumerable<T>>();
 

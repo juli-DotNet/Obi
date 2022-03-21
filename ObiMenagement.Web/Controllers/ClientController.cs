@@ -18,8 +18,9 @@ public class ClientController : Controller
         return new Client
         {
             Id = model.Id,
-            Name=model.Name,
-            Notes=model.Notes
+            Name = model.Name,
+            Notes = model.Notes,
+            Location= new Location { Id=model.LocationId}
         };
     }
     ClientViewModel Parse(Client model)
@@ -29,8 +30,7 @@ public class ClientController : Controller
             Id = model.Id,
             Name = model.Name,
             Notes = model.Notes,
-            Location=$"{model.Location.Name}:{model.Location.City}:{model.Location.Country}",
-            Contacts = string.Join(";", model.Contacts.Select(a => $"{a.Person.Name}:{a.Person.LastName}:{a.Person.PhoneNumber}")),
+            Location = $"{model.Location.Name}:{model.Location.City}:{model.Location.Country}"
         };
     }
 
@@ -117,6 +117,25 @@ public class ClientController : Controller
         {
             IsSuccessful = response.IsSuccessful,
             ErrorMessage = response.Message
+        });
+    }
+
+    public async Task<IActionResult> GetContacts(int id)
+    {
+        var response = await _clientService.GetClientContacts(id);
+
+        if (!response.IsSuccessful)
+        {
+            return Json(new GenericViewModel
+            {
+                ErrorMessage = response.Message,
+                IsSuccessful = response.IsSuccessful
+            });
+        }
+        return Json(new TableViewModel<PersonViewModel>
+        {
+            IsSuccessful = true,
+            Items = response.Result.Select(a => PersonController.Parse(a.Person)).ToList()
         });
     }
 }

@@ -8,5 +8,4 @@ public class ClientViewModel
     public string Contacts { get;  set; }
     public string Location { get;  set; }
     public int LocationId { get; set; }
-    public List<int> Contancts { get; set; }
 }

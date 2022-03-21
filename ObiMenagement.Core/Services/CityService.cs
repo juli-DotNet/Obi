@@ -76,7 +76,7 @@ public class CityService : BaseService<City>, ICityService
         return result;
     }
 
-    public async Task<Response<IEnumerable<City>>> GetAllAsync()
+    public async Task<Response<IEnumerable<City>>> GetAllAsync(string search = null)
     {
         var result = new Response<IEnumerable<City>>();
 

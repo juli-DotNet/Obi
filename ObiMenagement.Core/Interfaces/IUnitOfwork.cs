@@ -15,5 +15,6 @@ public interface IUnitOfWork
     IRepository<ExpenseType> ExpenseTypeRepository { get; }
     IRepository<Client> ClientRepository { get; }
     IRepository<RoadClient> RoadClientRepository { get; }
+    IRepository<ClientContact> ClientContactRepository { get; }
     Task SaveChangesAsync();
 }

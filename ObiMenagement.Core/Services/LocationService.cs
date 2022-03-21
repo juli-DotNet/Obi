@@ -105,7 +105,7 @@ public class LocationService : BaseService<Location>, ILocationService
         return result;
     }
 
-    public async Task<Response<IEnumerable<Location>>> GetAllAsync()
+    public async Task<Response<IEnumerable<Location>>> GetAllAsync(string search=null)
     {
         var result = new Response<IEnumerable<Location>>();
 
@@ -113,6 +113,11 @@ public class LocationService : BaseService<Location>, ILocationService
         {
             result.Result = await _unitOfWork.LocationRepository.WhereAsync(a => true, 
                 a => a.Country,a=>a.City);
+            if (!string.IsNullOrEmpty(search))
+            {
+                result.Result = result.Result.Where(a => $"{a.Country.Name}:{a.City.Name}:{a.Name}".Contains(search));
+
+            }
         }
         catch (Exception e)
         {
