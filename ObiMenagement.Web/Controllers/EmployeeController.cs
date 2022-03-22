@@ -31,17 +31,26 @@ public class EmployeeController : Controller
     }
     EmployeeViewModel Parse(Employee model)
     {
-        return new EmployeeViewModel()
+        var result= new EmployeeViewModel()
         {
             Id = model.Id,
-            DefaultTruckBaseId=model.DefaultTruckBase.Id,
-            DefaultTruckBase=$"{model.DefaultTruckBase.Plate}_{model.DefaultTruckBase.Color}",
             EndingDate=model.EndingDate,
             LeaveNote=model.LeaveNote,
-            StartingDate=model.StartingDate,
-            Person =$"{model.Person.PersonalNumber}:{model.Person.Name}_{model.Person.LastName}",
-            PersonID=model.Person.Id
+            StartingDate=model.StartingDate
         };
+        if (model.DefaultTruckBase is not null)
+        {
+            result.DefaultTruckBaseId = model.DefaultTruckBase.Id;
+            result.DefaultTruckBase = $"{model.DefaultTruckBase.Plate}_{model.DefaultTruckBase.Color}";
+        }
+        if (model.Person is not null)
+        {
+
+            result.Person = $"{model.Person.PersonalNumber}:{model.Person.Name}_{model.Person.LastName}";
+            result.PersonID = model.Person.Id;
+        }
+
+        return result;
     }
 
 

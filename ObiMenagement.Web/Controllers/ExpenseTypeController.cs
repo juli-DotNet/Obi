@@ -18,14 +18,40 @@ public class ExpenseTypeController : Controller
         return new ExpenseType
         {
             Id = model.Id,
+            Name = model.Name,
+            IsFuel = model.IsFuel,
+            IsPrepaymentGivenToEmployees = model.IsPrepaymentGivenToEmployee,
+            DefaultPayment = new Payment
+            {
+
+                PaymentTypeEnum = (PaymentTypeEnum)model.PaymentTypeId,
+                Price = model.Price,
+                Currency = new Currency { Id = model.CurrencyId }
+            }
+
         };
     }
     ExpenseTypeViewModel Parse(ExpenseType model)
     {
-        return new ExpenseTypeViewModel()
+        var result = new ExpenseTypeViewModel()
         {
             Id = model.Id,
+            Name = model.Name,
+            IsFuel = model.IsFuel,
+            IsPrepaymentGivenToEmployee = model.IsPrepaymentGivenToEmployees
         };
+
+        if (model.DefaultPayment is not null && model.DefaultPayment.Currency is not null)
+        {
+            result.Currency = model.DefaultPayment.Currency.Name;
+            result.CurrencySymbol = model.DefaultPayment.Currency.Symbol;
+            result.CurrencyId = model.DefaultPayment.Currency.Id;
+            result.Price = model.DefaultPayment.Price;
+            result.PaymentTypeId = (int)model.DefaultPayment.PaymentTypeEnum;
+            result.PaymentType = model.DefaultPayment.PaymentTypeEnum.ToString();
+        }
+
+        return result;
     }
 
     public async Task<IActionResult> Index()

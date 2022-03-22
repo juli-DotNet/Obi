@@ -1,6 +1,6 @@
 
 
-dotnet-ef  migrations add ClientContactsModel --project ObiMenagement.Infrastructure --startup-project ObiMenagement.Web 
+dotnet-ef  migrations add RenameIsPositiveColument --project ObiMenagement.Infrastructure --startup-project ObiMenagement.Web 
 
 
 dotnet-ef   database update --project ObiMenagement.Infrastructure --startup-project ObiMenagement.Web 

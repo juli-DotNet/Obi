@@ -12,19 +12,22 @@ public class JsonController : Controller
     private readonly IPersonService _personService;
     private readonly ITrackBaseService _trackBaseService;
     private readonly ILocationService _locationService;
+    private readonly ICurrencyService _currencyService;
 
-    public JsonController(ICountryService countryService,ICityService cityService,IPersonService personService,ITrackBaseService trackBaseService,ILocationService locationService)
+    public JsonController(ICountryService countryService, ICityService cityService, IPersonService personService, 
+        ITrackBaseService trackBaseService, ILocationService locationService,ICurrencyService currencyService)
     {
         _countryService = countryService;
         this._cityService = cityService;
         this._personService = personService;
         this._trackBaseService = trackBaseService;
         this._locationService = locationService;
+        this._currencyService = currencyService;
     }
     [HttpGet]
     public async Task<IActionResult> GetCountries(string search, int page)
     {
-
+        search ??= "";
         var serviceResponse = await _countryService.GetAllWithoutMetadataAsync();
 
         var result = new JsonGenericModel();
@@ -41,9 +44,9 @@ public class JsonController : Controller
         return Json(result);
     }
     [HttpGet]
-    public async Task<IActionResult> GetCities(string search, int page,int countryId)
+    public async Task<IActionResult> GetCities(string search, int page, int countryId)
     {
-
+        search ??= "";
         var serviceResponse = await _cityService.GetAllWithoutMetadataAsync(countryId);
 
         var result = new JsonGenericModel();
@@ -71,7 +74,7 @@ public class JsonController : Controller
         if (serviceResponse.IsSuccessful)
         {
             result.IsSuccessful = true;
-            result.Items = serviceResponse.Result.Select(a => Parse(a)).Where(a=>a.Text.Contains(search));
+            result.Items = serviceResponse.Result.Select(a => Parse(a)).Where(a => a.Text.Contains(search));
         }
         else
         {
@@ -84,7 +87,7 @@ public class JsonController : Controller
     [HttpGet]
     public async Task<IActionResult> GetTruckBases(string search, int page)
     {
-
+        search ??= "";
         var serviceResponse = await _trackBaseService.GetAllAsync();
 
         var result = new JsonGenericModel();
@@ -104,14 +107,14 @@ public class JsonController : Controller
     [HttpGet]
     public async Task<IActionResult> GetLocations(string search, int page)
     {
-
+        search ??= "";
         var serviceResponse = await _locationService.GetAllAsync();
 
         var result = new JsonGenericModel();
         if (serviceResponse.IsSuccessful)
         {
             result.IsSuccessful = true;
-            result.Items = serviceResponse.Result.Select(a => Parse(a)).Where(a=>a.Text.Contains(search)).ToList();
+            result.Items = serviceResponse.Result.Select(a => Parse(a)).Where(a => a.Text.Contains(search)).ToList();
         }
         else
         {
@@ -121,12 +124,56 @@ public class JsonController : Controller
         return Json(result);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetPaymentTypes(string search, int page)
+    {
+        search ??= "";
+
+        var allTypes = Enum.GetValues(typeof(PaymentTypeEnum)).Cast<PaymentTypeEnum>().Select(a => new SelectDataDTO
+        {
+
+            Id = ((int)a).ToString(),
+            Text = a.ToString()
+        }).ToList();
+
+        var result = new JsonGenericModel() { IsSuccessful = true };
+        result.Items = allTypes.Where(a => a.Text.Contains(search));
+        return Json(result);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetCurrencies(string search, int page)
+    {
+        search ??= "";
+        var serviceResponse = await _currencyService.GetAllAsync();
+
+        var result = new JsonGenericModel();
+        if (serviceResponse.IsSuccessful)
+        {
+            result.IsSuccessful = true;
+            result.Items = serviceResponse.Result.Select(a => Parse(a)).Where(a => a.Text.Contains(search)).ToList();
+        }
+        else
+        {
+            result.ErrorMessage = serviceResponse.Message;
+        }
+
+        return Json(result);
+    }
+    private SelectDataDTO Parse(Currency model)
+    {
+        return new SelectDataDTO()
+        {
+            Id = model.Id.ToString(),
+            Text = model.Name
+        };
+    }
     private SelectDataDTO Parse(Location model)
     {
         return new SelectDataDTO()
         {
             Id = model.Id.ToString(),
-            Text =$"{model.Country.Name}:{model.City.Name}:{model.Name}"
+            Text = $"{model.Country.Name}:{model.City.Name}:{model.Name}"
         };
     }
     private SelectDataDTO Parse(Person model)

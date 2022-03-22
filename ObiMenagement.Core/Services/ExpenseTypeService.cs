@@ -29,6 +29,7 @@ public class ExpenseTypeService : BaseService<ExpenseType>, IExpenseTypeService
             result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.DefaultPayment)));
             return true;
         }
+        model.DefaultPayment.Currency =await _unitOfWork.CurrencyRepository.FirstOrDefault(a => a.Id == model.DefaultPayment.Currency.Id);
         return false;
     }
     public async Task<Response> CreateAsync(ExpenseType model)
@@ -52,7 +53,7 @@ public class ExpenseTypeService : BaseService<ExpenseType>, IExpenseTypeService
         return result;
     }
 
-    public async Task<Response> DeleteAsync(int id)
+    public override async Task<Response> DeleteAsync(int id)
     {
         var result = new Response();
 
@@ -77,19 +78,24 @@ public class ExpenseTypeService : BaseService<ExpenseType>, IExpenseTypeService
         return result;
     }
 
-    public async Task<Response> EditAsync(ExpenseType model)
+    public override async Task<Response> EditAsync(ExpenseType model)
     {
         var result = new Response();
         try
         {
-            if (!await _unitOfWork.ExpenseTypeRepository.AnyAsync(a => a.Id == model.Id && a.IsValid))
+            var currentData = await _unitOfWork.ExpenseTypeRepository.FirstOrDefault(a => a.Id == model.Id && a.IsValid);
+            if (currentData is null)
             {
                 result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(model.Id));
                 return result;
             }
             if (await ValidateModel(model, result)) return result;
 
-            await _unitOfWork.ExpenseTypeRepository.UpdateAsync(model);
+            await _unitOfWork.ExpenseTypeRepository.DeleteAsync(currentData.Id);
+            await _unitOfWork.SaveChangesAsync();
+
+            model.Id = 0;
+            await _unitOfWork.ExpenseTypeRepository.InsertAsync(model);
             await _unitOfWork.SaveChangesAsync();
 
         }
@@ -103,13 +109,13 @@ public class ExpenseTypeService : BaseService<ExpenseType>, IExpenseTypeService
         return result;
     }
 
-    public async Task<Response<IEnumerable<ExpenseType>>> GetAllAsync()
+    public override async Task<Response<IEnumerable<ExpenseType>>> GetAllAsync(string search=null)
     {
         var result = new Response<IEnumerable<ExpenseType>>();
 
         try
         {
-            result.Result = await _unitOfWork.ExpenseTypeRepository.WhereAsync(a => true);
+            result.Result = await _unitOfWork.ExpenseTypeRepository.WhereAsync(a => true,a=>a.DefaultPayment,a=>a.DefaultPayment.Currency);
         }
         catch (Exception e)
         {
@@ -119,13 +125,13 @@ public class ExpenseTypeService : BaseService<ExpenseType>, IExpenseTypeService
         return result;
     }
 
-    public async Task<Response<ExpenseType>> GetByIdAsync(int id)
+    public override async Task<Response<ExpenseType>> GetByIdAsync(int id)
     {
         var result = new Response<ExpenseType>();
 
         try
         {
-            result.Result = await _unitOfWork.ExpenseTypeRepository.FirstOrDefault(a => a.Id == id);
+            result.Result = await _unitOfWork.ExpenseTypeRepository.FirstOrDefault(a => a.Id == id, a => a.DefaultPayment, a => a.DefaultPayment.Currency);
         }
         catch (Exception e)
         {

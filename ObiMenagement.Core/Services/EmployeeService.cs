@@ -26,7 +26,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         return false;
     }
 
-    public async Task<Response> CreateAsync(Employee model)
+    public override async Task<Response> CreateAsync(Employee model)
     {
         var result = new Response();
         try
@@ -46,7 +46,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         return result;
     }
 
-    public async Task<Response> DeleteAsync(int id)
+    public override async Task<Response> DeleteAsync(int id)
     {
         var result = new Response();
 
@@ -70,7 +70,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         return result;
     }
 
-    public async Task<Response> EditAsync(Employee model)
+    public override async Task<Response> EditAsync(Employee model)
     {
         var result = new Response();
         try
@@ -95,7 +95,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         return result;
     }
 
-    public async Task<Response<IEnumerable<Employee>>> GetAllAsync()
+    public override async Task<Response<IEnumerable<Employee>>> GetAllAsync(string search=null)
     {
         var result = new Response<IEnumerable<Employee>>();
 
@@ -111,7 +111,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         return result;
     }
 
-    public async Task<Response<Employee>> GetByIdAsync(int id)
+    public override async Task<Response<Employee>> GetByIdAsync(int id)
     {
         var result = new Response<Employee>();
 
@@ -127,7 +127,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         return result;
     }
 
-    public async Task<Response<IEnumerable<Employee>>> GetAllWithoutMetadataAsync()
+    public  async Task<Response<IEnumerable<Employee>>> GetAllWithoutMetadataAsync()
     {
         var result = new Response<IEnumerable<Employee>>();
 
