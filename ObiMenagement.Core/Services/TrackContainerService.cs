@@ -1,19 +1,20 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class TrackContainerService : BaseService, ITrackContainerService
+public class TrackContainerService : BaseService<TruckContainer>, ITrackContainerService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public TrackContainerService(IUnitOfWork unitOfWork)
+    public TrackContainerService(IUnitOfWork unitOfWork,ILogger<TrackBaseService> logger):base(unitOfWork,unitOfWork.TruckContainerRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }
     
-    private async Task<bool> ValidateModel(TruckContainer model, Response result)
+    protected override async Task<bool> ValidateModel(TruckContainer model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Plate))
         {

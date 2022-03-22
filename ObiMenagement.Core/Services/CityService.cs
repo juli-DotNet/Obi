@@ -1,14 +1,15 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class CityService : BaseService, ICityService
+public class CityService : BaseService<City>, ICityService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public CityService(IUnitOfWork unitOfWork)
+    public CityService(IUnitOfWork unitOfWork,ILogger<CityService> logger):base(unitOfWork,unitOfWork.CityRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }
@@ -23,7 +24,7 @@ public class CityService : BaseService, ICityService
         return result;
     }
 
-    private async Task<bool> ValidateModel(City model, Response result)
+    protected override async Task<bool> ValidateModel(City model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Name))
         {
@@ -75,7 +76,7 @@ public class CityService : BaseService, ICityService
         return result;
     }
 
-    public async Task<Response<IEnumerable<City>>> GetAllAsync()
+    public async Task<Response<IEnumerable<City>>> GetAllAsync(string search = null)
     {
         var result = new Response<IEnumerable<City>>();
 

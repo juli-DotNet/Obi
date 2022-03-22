@@ -12,5 +12,9 @@ public interface IUnitOfWork
     IRepository<Location> LocationRepository { get;  }
     IRepository<Person> PersonRepository { get;  }
     IRepository<Employee> EmployeeRepository { get;  }
+    IRepository<ExpenseType> ExpenseTypeRepository { get; }
+    IRepository<Client> ClientRepository { get; }
+    IRepository<RoadClient> RoadClientRepository { get; }
+    IRepository<ClientContact> ClientContactRepository { get; }
     Task SaveChangesAsync();
 }

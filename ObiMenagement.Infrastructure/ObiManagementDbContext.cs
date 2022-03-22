@@ -21,6 +21,10 @@ public class ObiManagementDbContext:IdentityDbContext
     public DbSet<TruckBase> TruckBase { get; set; }
     public DbSet<TruckContainer> TruckContainer { get; set; }
     public DbSet<Location> Location { get; set; }
+    public DbSet<Client> Client { get; set; }
+    public DbSet<ClientContact> ClientContact { get; set; }
+    public DbSet<RoadClient> RoadClient { get; set; }
+    public DbSet<ExpenseType> ExpenseType { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

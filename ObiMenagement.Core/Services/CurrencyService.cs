@@ -1,18 +1,19 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class CurrencyService : BaseService, ICurrencyService
+public class CurrencyService : BaseService<Currency>, ICurrencyService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public CurrencyService(IUnitOfWork unitOfWork)
+    public CurrencyService(IUnitOfWork unitOfWork,ILogger<CurrencyService> logger):base(unitOfWork,unitOfWork.CurrencyRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }
-    private async Task<bool> ValidateModel(Currency model, Response result)
+    protected override async Task<bool> ValidateModel(Currency model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Name))
         {

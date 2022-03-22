@@ -1,14 +1,15 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class TrackBaseService : BaseService, ITrackBaseService
+public class TrackBaseService : BaseService<TruckBase>, ITrackBaseService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    private async Task<bool> ValidateModel(TruckBase model, Response result)
+    protected override async Task<bool> ValidateModel(TruckBase model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Plate))
         {
@@ -17,7 +18,7 @@ public class TrackBaseService : BaseService, ITrackBaseService
         }
         return false;
     }
-    public TrackBaseService(IUnitOfWork unitOfWork)
+    public TrackBaseService(IUnitOfWork unitOfWork,ILogger<TrackBaseService> logger):base(unitOfWork,unitOfWork.TruckBaseRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }

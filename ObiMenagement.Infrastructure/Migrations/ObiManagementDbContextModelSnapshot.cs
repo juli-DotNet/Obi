@@ -263,6 +263,93 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.ToTable("City");
                 });
 
+            modelBuilder.Entity("ObiMenagement.Core.Models.Client", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.ToTable("Client");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.ClientContact", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("ClientContact");
+                });
+
             modelBuilder.Entity("ObiMenagement.Core.Models.Country", b =>
                 {
                     b.Property<int>("Id")
@@ -400,6 +487,49 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.ToTable("Employee");
                 });
 
+            modelBuilder.Entity("ObiMenagement.Core.Models.ExpenseType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsFuel")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsPrepaymentGivenToEmployees")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.ToTable("ExpenseType");
+                });
+
             modelBuilder.Entity("ObiMenagement.Core.Models.Location", b =>
                 {
                     b.Property<int>("Id")
@@ -508,6 +638,77 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.HasIndex("ModifiedById");
 
                     b.ToTable("Person");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.RoadClient", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("CurrencyId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("DestinationLocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal>("LDM")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Other")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("StartingLocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("VolumeInM3")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("WeightInKg")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.HasIndex("DestinationLocationId");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("StartingLocationId");
+
+                    b.ToTable("RoadClient");
                 });
 
             modelBuilder.Entity("ObiMenagement.Core.Models.TruckBase", b =>
@@ -672,6 +873,60 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Navigation("ModifiedBy");
                 });
 
+            modelBuilder.Entity("ObiMenagement.Core.Models.Client", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("ModifiedBy");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.ClientContact", b =>
+                {
+                    b.HasOne("ObiMenagement.Core.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("Person");
+                });
+
             modelBuilder.Entity("ObiMenagement.Core.Models.Country", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy")
@@ -741,6 +996,56 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Navigation("Person");
                 });
 
+            modelBuilder.Entity("ObiMenagement.Core.Models.ExpenseType", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.OwnsOne("ObiMenagement.Core.Models.Payment", "DefaultPayment", b1 =>
+                        {
+                            b1.Property<int>("ExpenseTypeId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("CurrencyId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("PaymentTypeEnum")
+                                .HasColumnType("integer");
+
+                            b1.Property<decimal>("Price")
+                                .HasColumnType("numeric");
+
+                            b1.HasKey("ExpenseTypeId");
+
+                            b1.HasIndex("CurrencyId");
+
+                            b1.ToTable("ExpenseType");
+
+                            b1.HasOne("ObiMenagement.Core.Models.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("ExpenseTypeId");
+
+                            b1.Navigation("Currency");
+                        });
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DefaultPayment")
+                        .IsRequired();
+
+                    b.Navigation("ModifiedBy");
+                });
+
             modelBuilder.Entity("ObiMenagement.Core.Models.Location", b =>
                 {
                     b.HasOne("ObiMenagement.Core.Models.City", "City")
@@ -785,6 +1090,53 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("ModifiedBy");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.RoadClient", b =>
+                {
+                    b.HasOne("ObiMenagement.Core.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.Currency", "Currency")
+                        .WithMany()
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ObiMenagement.Core.Models.Location", "DestinationLocation")
+                        .WithMany()
+                        .HasForeignKey("DestinationLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.Location", "StartingLocation")
+                        .WithMany()
+                        .HasForeignKey("StartingLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Client");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Currency");
+
+                    b.Navigation("DestinationLocation");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("StartingLocation");
                 });
 
             modelBuilder.Entity("ObiMenagement.Core.Models.TruckBase", b =>

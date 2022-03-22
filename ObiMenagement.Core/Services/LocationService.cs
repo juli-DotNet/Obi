@@ -1,18 +1,19 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class LocationService : BaseService, ILocationService
+public class LocationService : BaseService<Location>, ILocationService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public LocationService(IUnitOfWork unitOfWork)
+    public LocationService(IUnitOfWork unitOfWork,ILogger<LocationService> logger):base(unitOfWork,unitOfWork.LocationRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }
-    private async Task<bool> ValidateModel(Location model, Response result)
+    protected override async Task<bool> ValidateModel(Location model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Name))
         {
@@ -104,7 +105,7 @@ public class LocationService : BaseService, ILocationService
         return result;
     }
 
-    public async Task<Response<IEnumerable<Location>>> GetAllAsync()
+    public async Task<Response<IEnumerable<Location>>> GetAllAsync(string search=null)
     {
         var result = new Response<IEnumerable<Location>>();
 
@@ -112,6 +113,11 @@ public class LocationService : BaseService, ILocationService
         {
             result.Result = await _unitOfWork.LocationRepository.WhereAsync(a => true, 
                 a => a.Country,a=>a.City);
+            if (!string.IsNullOrEmpty(search))
+            {
+                result.Result = result.Result.Where(a => $"{a.Country.Name}:{a.City.Name}:{a.Name}".Contains(search));
+
+            }
         }
         catch (Exception e)
         {

@@ -1,26 +1,33 @@
+using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
-public class CountryService : BaseService, ICountryService
+public class CountryService : BaseService<Country>, ICountryService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public CountryService(IUnitOfWork unitOfWork)
+    public CountryService(IUnitOfWork unitOfWork,ILogger<CountryService> logger):base(unitOfWork,unitOfWork.CountryRepository,logger)
     {
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Response> CreateAsync(Country model)
+    protected override async Task<bool> ValidateModel(Country model, Response result)
     {
-        var result = new Response();
         if (string.IsNullOrWhiteSpace(model.Name))
         {
             result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.Name)));
-            return result;
+            return true;
         }
+
+        return false;
+    }
+    public async Task<Response> CreateAsync(Country model)
+    {
+        var result = new Response();
+        if (await ValidateModel(model, result)) return result;
 
         if (await _unitOfWork.CountryRepository.AnyAsync(a => a.Name == model.Name && a.IsValid))
         {

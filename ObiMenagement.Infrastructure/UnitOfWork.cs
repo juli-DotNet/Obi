@@ -20,6 +20,10 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<Location> LocationRepository =>new Repository<Location>(_context);
     public IRepository<Person> PersonRepository =>new Repository<Person>(_context);
     public IRepository<Employee> EmployeeRepository =>new Repository<Employee>(_context);
+    public IRepository<ExpenseType> ExpenseTypeRepository =>new Repository<ExpenseType>(_context);
+    public IRepository<Client> ClientRepository =>new Repository<Client>(_context);
+    public IRepository<ClientContact> ClientContactRepository =>new Repository<ClientContact>(_context);
+    public IRepository<RoadClient> RoadClientRepository =>new Repository<RoadClient>(_context);
 
     public async Task SaveChangesAsync()
     {
