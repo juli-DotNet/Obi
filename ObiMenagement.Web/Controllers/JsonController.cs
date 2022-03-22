@@ -70,7 +70,7 @@ public class JsonController : Controller
         if (serviceResponse.IsSuccessful)
         {
             result.IsSuccessful = true;
-            result.Items = serviceResponse.Result.Select(a => Parse(a));
+            result.Items = serviceResponse.Result.Select(a => Parse(a)).Where(a=>a.Text.Contains(search));
         }
         else
         {

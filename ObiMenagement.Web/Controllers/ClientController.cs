@@ -34,6 +34,22 @@ public class ClientController : Controller
         };
     }
 
+    ClientContactViewModel ParseClientContact(Client model)
+    {
+        return new ClientContactViewModel
+        {
+            ClientId = model.Id,
+            ClientName = model.Name
+        };
+    }
+    ClientContact ParseClientContact(ClientContactViewModel model)
+    {
+        return new ClientContact()
+        {
+            Person = new Person(){Id = model.PersonId},
+            Client = new Client(){Id = model.ClientId}
+        };
+    }
     public async Task<IActionResult> Index()
     {
         var result = await _clientService.GetAllAsync();
@@ -113,6 +129,59 @@ public class ClientController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         var response = await _clientService.DeleteAsync(id);
+        return Json(new GenericViewModel
+        {
+            IsSuccessful = response.IsSuccessful,
+            ErrorMessage = response.Message
+        });
+    }
+    
+    private ViewResult AddClientContactView(ClientContactViewModel model=null)
+    {
+        return View("ClientContact",model?? new ClientContactViewModel());
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="id">Client Id</param>
+    /// <returns></returns>
+    public async Task<IActionResult> AddContact(int id)
+    {
+        var response = await _clientService.GetByIdAsync(id);
+
+        if (!response.IsSuccessful)
+        {
+            ModelState.AddModelError("", response.Message);
+            return AddClientContactView();
+        }
+        return AddClientContactView(ParseClientContact(response.Result));
+    }
+
+ 
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddContact(ClientContactViewModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _clientService.AddClientContacts(ParseClientContact(model));
+            if (!result.IsSuccessful)
+            {
+                ModelState.AddModelError("", result.Message);
+                return AddClientContactView(model);
+
+            }
+            return RedirectToAction("Edit",new {id=model.ClientId});
+        }
+        return AddClientContactView(model);
+
+    }
+    
+    public async Task<IActionResult> DeleteContact(int id)
+    {
+        var response = await _clientService.RemoveClientContacts(id);
         return Json(new GenericViewModel
         {
             IsSuccessful = response.IsSuccessful,

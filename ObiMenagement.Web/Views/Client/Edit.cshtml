@@ -18,6 +18,19 @@
         </form>
     </div>
 </div>
+
+<div class="list-header"></div>
+<div class="row ">
+    <div class="col-md-11">
+        <h3 class="d-inline">Client  </h3>
+    </div>
+    <div class="col-md-1">
+        <a asp-action="AddContact" asp-route-id="@Model.Id" class="btn btn-primary">Add </a>
+    </div>
+</div>
+<hr />
+<div class="list-header"></div>
+
 <div class="row">
     <div class="col-md-12">
         <table class="table display">
@@ -66,7 +79,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <link href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
 <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-    <script>
+<script>
         $(function () {
             var table = $(".table").DataTable({
                 ajax: {
@@ -76,23 +89,23 @@
                 "columns": [
                     { "data": "name" },
                     { "data": "lastName" },
-                    { "data": "phone" },
                     { "data": "phoneNumber" },
-                    { "data": "email" }
+                    { "data": "email" },
+                    { "data": "id" }
                 ],
                 "columnDefs":
                     [
                         { targets: 'no-sort', orderable: false },
                         {
-                            targets: 5, render: function (data) {
-                                    return '<button  type="button" data-site-id="' + data + '"  class="btn btn-primary detailSite">Details</button>' + " " + '<button  type="button" data-site-id="' + data + '"  class="btn btn-danger removeLinkedSite" disabled>Remove Site</button>'
-                                
+                            targets: 4, render: function (data) {
+                                    return " " + '<button  type="button" data-site-id="' + data + '"  class="btn btn-danger removeLinkedSite" >Remove Contact</button>'
+
                             }
                         }
                     ]
             });
         });
-    </script>
+</script>
 <script>
     $(function () {
 

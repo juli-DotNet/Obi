@@ -33,6 +33,71 @@ public class ClientService : BaseService<Client>, IClientService
         return result;
     }
 
+    public async Task<Response> AddClientContacts(ClientContact model)
+    {
+        var result = new Response();
+
+        try
+        {
+            model.Id = 0;
+            var client = await _repository.FirstOrDefault(a => a.Id == model.Client.Id && a.IsValid);
+            if (client is null)
+            {
+                result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(model.Client));
+                return result;
+            }
+            model.Client = client;
+            
+            var person = await _unitOfWork.PersonRepository.FirstOrDefault(a => a.Id == model.Client.Id && a.IsValid);
+            if (person is null)
+            {
+                result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(model.Person));
+                return result;
+            }
+
+            model.Person = person;
+
+            await _unitOfWork.ClientContactRepository.InsertAsync(model);
+            await _unitOfWork.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            logger.LogError("failed to add Client Contact",e);
+            Logger.Instance.LogError(e);
+            result.Exception = e;
+        }
+
+        return result;
+    }
+
+    public async Task<Response> RemoveClientContacts(int clientContactId)
+    {
+        var result = new Response();
+
+        try
+        {
+            
+            var person = await _unitOfWork.ClientContactRepository.FirstOrDefault(a =>
+                a.Id == clientContactId && a.IsValid);
+            if (person is null)
+            {
+                result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(clientContactId));
+                return result;
+            }
+
+            await _unitOfWork.ClientContactRepository.DeleteAsync(clientContactId);
+            await _unitOfWork.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            logger.LogError("failed to add Client Contact",e);
+            Logger.Instance.LogError(e);
+            result.Exception = e;
+        }
+
+        return result;
+    }
+
     public override async Task<Response<IEnumerable<Client>>> GetAllAsync(string search = null)
     {
         var result = new Response<IEnumerable<Client>>();

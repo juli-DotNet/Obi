@@ -1,0 +1,76 @@
+﻿@model ClientContactViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row ">
+    <div class="col-md-11">
+        <h2 class="d-inline">ClientContacts - @ViewData["Title"]</h2>
+    </div>
+    <div class="col-md-1">
+        <a asp-action="Edit" asp-route-id="@Model.ClientId" class="btn btn-light">Back</a>
+    </div>
+</div>
+<hr/>
+<div class="list-header"></div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddContact">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="ClientId" hidden/>
+            <input asp-for="PersonName" value="a" hidden/>
+            <div class="form-group">
+                <label asp-for="ClientName" class="control-label"></label>
+                <input asp-for="ClientName" disabled="disabled" class="form-control"/>
+                <input asp-for="ClientName" hidden/>
+                <span asp-validation-for="ClientName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PersonId" class="control-label"></label>
+                <select asp-for="PersonId" class="form-control selectAdd">
+                    @if (Model.PersonId > 0)
+                    {
+                        <option selected value="@Model.PersonId">@Model.PersonName</option>
+                    }
+                </select>
+                <span asp-validation-for="PersonId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success"/>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script>
+    $(function () {
+
+$('#PersonId').select2({
+                placeholder: 'Select an option',
+                ajax: {
+                    url: '@Url.Action("GetPersons", "Json")',
+                    data: function (params) {
+                        var query = {
+                            search: params.term,
+                            page: params.page || 1
+                        }
+                        return query;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: data.items
+                        };
+                    }
+                }
+           });
+    });
+
+</script>
+}
