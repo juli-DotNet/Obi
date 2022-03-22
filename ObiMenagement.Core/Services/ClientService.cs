@@ -40,6 +40,12 @@ public class ClientService : BaseService<Client>, IClientService
         try
         {
             model.Id = 0;
+            if (await _unitOfWork.ClientContactRepository.AnyAsync(a => a.Client.Id == model.Client.Id && a.Person.Id == model.Person.Id && a.IsValid))
+            {
+                result.Exception = new ObiException(ErrorMessages.EntityExist(nameof(model.Person)));
+                return result;
+
+            }
             var client = await _repository.FirstOrDefault(a => a.Id == model.Client.Id && a.IsValid);
             if (client is null)
             {
@@ -47,22 +53,23 @@ public class ClientService : BaseService<Client>, IClientService
                 return result;
             }
             model.Client = client;
-            
-            var person = await _unitOfWork.PersonRepository.FirstOrDefault(a => a.Id == model.Client.Id && a.IsValid);
+
+            var person = await _unitOfWork.PersonRepository.FirstOrDefault(a => a.Id == model.Person.Id && a.IsValid);
             if (person is null)
             {
                 result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(model.Person));
                 return result;
             }
-
             model.Person = person;
+
+
 
             await _unitOfWork.ClientContactRepository.InsertAsync(model);
             await _unitOfWork.SaveChangesAsync();
         }
         catch (Exception e)
         {
-            logger.LogError("failed to add Client Contact",e);
+            logger.LogError("failed to add Client Contact", e);
             Logger.Instance.LogError(e);
             result.Exception = e;
         }
@@ -76,7 +83,7 @@ public class ClientService : BaseService<Client>, IClientService
 
         try
         {
-            
+
             var person = await _unitOfWork.ClientContactRepository.FirstOrDefault(a =>
                 a.Id == clientContactId && a.IsValid);
             if (person is null)
@@ -90,7 +97,7 @@ public class ClientService : BaseService<Client>, IClientService
         }
         catch (Exception e)
         {
-            logger.LogError("failed to add Client Contact",e);
+            logger.LogError("failed to add Client Contact", e);
             Logger.Instance.LogError(e);
             result.Exception = e;
         }
@@ -104,7 +111,7 @@ public class ClientService : BaseService<Client>, IClientService
 
         try
         {
-            result.Result = await _repository.WhereAsync(a => true,a=>a.Location);
+            result.Result = await _repository.WhereAsync(a => true, a => a.Location);
 
         }
         catch (Exception e)
@@ -121,7 +128,7 @@ public class ClientService : BaseService<Client>, IClientService
 
         try
         {
-            result.Result = await _repository.FirstOrDefault(a => a.Id == id,a=>a.Location);
+            result.Result = await _repository.FirstOrDefault(a => a.Id == id, a => a.Location);
         }
         catch (Exception e)
         {

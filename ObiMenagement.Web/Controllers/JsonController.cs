@@ -63,6 +63,7 @@ public class JsonController : Controller
     [HttpGet]
     public async Task<IActionResult> GetPersons(string search, int page)
     {
+        search ??= "";
 
         var serviceResponse = await _personService.GetAllWithoutMetadataAsync();
 

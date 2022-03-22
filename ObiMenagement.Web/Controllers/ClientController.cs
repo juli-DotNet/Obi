@@ -30,6 +30,7 @@ public class ClientController : Controller
             Id = model.Id,
             Name = model.Name,
             Notes = model.Notes,
+            LocationId=model.Location.Id,
             Location = $"{model.Location.Name}:{model.Location.City}:{model.Location.Country}"
         };
     }
