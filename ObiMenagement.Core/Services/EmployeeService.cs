@@ -22,7 +22,11 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         }
         model.Person = await _unitOfWork.PersonRepository.FirstOrDefault(a => a.Id == model.Person.Id);
         model.DefaultTruckBase = await _unitOfWork.TruckBaseRepository.FirstOrDefault(a => a.Id == model.DefaultTruckBase.Id);
-
+        model.StartingDate = model.StartingDate.ToUniversalTime();
+        if (model.EndingDate.HasValue)
+        {
+            model.EndingDate = model.EndingDate.Value.ToUniversalTime();
+        }
         return false;
     }
 
@@ -32,7 +36,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         try
         {
             if (await ValidateModel(model, result)) return result;
-
+            
             await _unitOfWork.EmployeeRepository.InsertAsync(model);
             await _unitOfWork.SaveChangesAsync();
 

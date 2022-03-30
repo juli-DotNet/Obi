@@ -22,9 +22,9 @@ public class EmployeeController : Controller
         return new Employee()
         {
             Id = model.Id,
-            EndingDate=model.EndingDate,
+            EndingDate=model.EndingDate.TryConvertToDate(),
             LeaveNote=model.LeaveNote,
-            StartingDate=model.StartingDate,
+            StartingDate=model.StartingDate.ConvertToDate(),
             Person=new Person { Id=model.PersonID},
             DefaultTruckBase=new TruckBase { Id=model.DefaultTruckBaseId}
         };
@@ -34,9 +34,9 @@ public class EmployeeController : Controller
         var result= new EmployeeViewModel()
         {
             Id = model.Id,
-            EndingDate=model.EndingDate,
+            EndingDate=model.EndingDate.CovertDateToString(),
             LeaveNote=model.LeaveNote,
-            StartingDate=model.StartingDate
+            StartingDate=model.StartingDate.CovertDateToString()
         };
         if (model.DefaultTruckBase is not null)
         {

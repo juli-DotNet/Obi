@@ -1,4 +1,5 @@
-﻿@model EmployeeViewModel
+﻿@using ObiMenagement.Core.Models
+@model EmployeeViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -18,12 +19,30 @@
     </div>
 </div>
 
-@section Scripts{
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
 <script>
     $(function () {
-      $('#PersonID').select2({
+         $("#StartingDate").datepicker({
+                                           changeMonth: true,
+                                           changeYear: true,
+                                           showButtonPanel: true,
+                                           // yearRange: "-100:+0",
+                                           dateFormat: '@DateConstants.FormatUI'
+                                       
+                                       });
+         $("#EndingDate").datepicker({
+                                                                                changeMonth: true,
+                                                                                changeYear: true,
+                                                                                showButtonPanel: true,
+                                                                                dateFormat: '@DateConstants.FormatUI'
+                                                                            
+                                                                            });
+         $('#PersonID').select2({
                     placeholder: 'Select an option',
                     ajax: {
                         url: '@Url.Action("GetPersons", "Json")',
@@ -40,9 +59,9 @@
                             };
                         }
                     }
-               });
+         });
 
-                     $('#DefaultTruckBaseId').select2({
+         $('#DefaultTruckBaseId').select2({
                     placeholder: 'Select an option',
                     ajax: {
                         url: '@Url.Action("GetTruckBases", "Json")',
@@ -59,7 +78,8 @@
                             };
                         }
                     }
-               })
+         });
+              
     });
 </script>
 }
