@@ -1,0 +1,56 @@
+@model TripViewModel
+
+<input asp-for="Id" hidden />
+<input asp-for="Number" hidden />
+<div class="form-group">
+    <label asp-for="Number" class="control-label"></label>
+    <input asp-for="Number" disabled="disabled" class="form-control" />
+    <span asp-validation-for="Number" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="Employee" class="control-label"></label>
+    <select asp-for="EmployeeId" class="form-control selectAdd">
+        <option selected value="@Model.EmployeeId">@Model.Employee</option>
+    </select>
+    <span asp-validation-for="EmployeeId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="TruckBase" class="control-label"></label>
+    <select asp-for="TruckBaseId" class="form-control selectAdd">
+        <option selected value="@Model.TruckBaseId">@Model.TruckBase</option>
+    </select>
+    <span asp-validation-for="TruckBaseId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="TruckContainer" class="control-label"></label>
+    <select asp-for="TruckContainerId" class="form-control selectAdd">
+        <option selected value="@Model.TruckContainerId">@Model.TruckContainer</option>
+    </select>
+    <span asp-validation-for="TruckContainerId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="StartingTrucKm" class="control-label"></label>
+    <input asp-for="StartingTrucKm" class="form-control" />
+    <span asp-validation-for="StartingTrucKm" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EndingTrucKm" class="control-label"></label>
+    <textarea asp-for="EndingTrucKm" class="form-control" ></textarea>
+    <span asp-validation-for="EndingTrucKm" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="StartingAmountOfFuel" class="control-label"></label>
+    <input asp-for="StartingAmountOfFuel" class="form-control" />
+    <span asp-validation-for="StartingAmountOfFuel" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EndingAmountOfFuel" class="control-label"></label>
+    <textarea asp-for="EndingAmountOfFuel" class="form-control" ></textarea>
+    <span asp-validation-for="EndingAmountOfFuel" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="TotalKM" class="control-label"></label>
+    <textarea asp-for="TotalKM" class="form-control" ></textarea>
+    <span asp-validation-for="TotalKM" class="text-danger"></span>
+</div>

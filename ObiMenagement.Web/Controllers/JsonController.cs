@@ -6,6 +6,7 @@ using ObiMenagement.Web.Models;
 namespace ObiMenagement.Web.Controllers;
 
 public class JsonController : Controller
+
 {
     private readonly ICountryService _countryService;
     private readonly ICityService _cityService;
@@ -13,9 +14,12 @@ public class JsonController : Controller
     private readonly ITrackBaseService _trackBaseService;
     private readonly ILocationService _locationService;
     private readonly ICurrencyService _currencyService;
+    private readonly IEmployeeService _employeeService;
+    private readonly ITrackContainerService _trackContainerService;
 
     public JsonController(ICountryService countryService, ICityService cityService, IPersonService personService, 
-        ITrackBaseService trackBaseService, ILocationService locationService,ICurrencyService currencyService)
+        ITrackBaseService trackBaseService, ILocationService locationService,ICurrencyService currencyService,
+        IEmployeeService employeeService,ITrackContainerService trackContainerService)
     {
         _countryService = countryService;
         this._cityService = cityService;
@@ -23,6 +27,8 @@ public class JsonController : Controller
         this._trackBaseService = trackBaseService;
         this._locationService = locationService;
         this._currencyService = currencyService;
+        _employeeService = employeeService;
+        _trackContainerService = trackContainerService;
     }
     [HttpGet]
     public async Task<IActionResult> GetCountries(string search, int page)
@@ -103,6 +109,25 @@ public class JsonController : Controller
 
         return Json(result);
     }
+    [HttpGet]
+    public async Task<IActionResult> GetTruckContainers(string search, int page)
+    {
+        search ??= "";
+        var serviceResponse = await _trackContainerService.GetAllAsync();
+
+        var result = new JsonGenericModel();
+        if (serviceResponse.IsSuccessful)
+        {
+            result.IsSuccessful = true;
+            result.Items = serviceResponse.Result.Select(a => Parse(a));
+        }
+        else
+        {
+            result.ErrorMessage = serviceResponse.Message;
+        }
+
+        return Json(result);
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetLocations(string search, int page)
@@ -159,6 +184,44 @@ public class JsonController : Controller
         }
 
         return Json(result);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetEmployees(string search, int page)
+    {
+        search ??= "";
+        var serviceResponse = await _employeeService.GetAllAsync();
+
+        var result = new JsonGenericModel();
+        if (serviceResponse.IsSuccessful)
+        {
+            result.IsSuccessful = true;
+            result.Items = serviceResponse.Result.Select(a => Parse(a)).Where(a => a.Text.Contains(search)).ToList();
+        }
+        else
+        {
+            result.ErrorMessage = serviceResponse.Message;
+        }
+
+        return Json(result);
+    }
+    
+    
+    private SelectDataDTO Parse(TruckContainer model)
+    {
+        return new SelectDataDTO()
+        {
+            Id = model.Id.ToString(),
+            Text = model.Plate.ToString()
+        };
+    }
+    private SelectDataDTO Parse(Employee model)
+    {
+        return new SelectDataDTO()
+        {
+            Id = model.Id.ToString(),
+            Text = model.ToString()
+        };
     }
     private SelectDataDTO Parse(Currency model)
     {
