@@ -7,54 +7,24 @@ namespace ObiMenagement.Web.Controllers;
 
 public class TripController : Controller
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly ITripService _tripService;
 
-    public TripController(IUnitOfWork unitOfWork, ITripService tripService)
+    public TripController(ITripService tripService)
     {
-        _unitOfWork = unitOfWork;
         _tripService = tripService;
-        tripData = CreateSampleData();
-    }
-
-    private List<Trip> tripData = null;
-
-    private List<Trip> CreateSampleData()
-    {
-        return new List<Trip>()
-        {
-            new Trip()
-            {
-                Id = 1,
-                Number = 1,
-                EndingAmountOfFuel = 1500,
-                StartingAmountOfFuel = 500,
-                StartingTrucKm = 1000,
-                EndingTrucKm = 1500,
-                TruckBase = _unitOfWork.TruckBaseRepository.GetAllAsync().GetAwaiter().GetResult().First(),
-                Employee = _unitOfWork.EmployeeRepository.GetAllAsync().GetAwaiter().GetResult().First(),
-                TruckContainer = _unitOfWork.TruckContainerRepository.GetAllAsync().GetAwaiter().GetResult()
-                    .FirstOrDefault(),
-                TotalKM = 1200,
-                Roads = new List<RoadData>()
-                {
-                }
-            }
-        };
     }
 
     #region Trip CURD
 
     public async Task<IActionResult> Index()
     {
-        // var result = await _trackContainerService.GetAllAsync();
-        // if (!result.IsSuccessful)
-        // {
-        //     ModelState.AddModelError("", result.Message);
-        // }
-        var result = tripData;
-        // return View(result.Result.Select(Parse));
-        return View(result.Select(Parse));
+        var result = await _tripService.GetAllAsync();
+        if (!result.IsSuccessful)
+        {
+            ModelState.AddModelError("", result.Message);
+        }
+
+        return View(result.Result.Select(Parse));
     }
 
     public IActionResult Create()
@@ -65,45 +35,37 @@ public class TripController : Controller
 
     public async Task<IActionResult> Edit(int id)
     {
-        // var result = await _tripService.GetByIdAsync(id);
-        //
-        // if (!result.IsSuccessful)
-        // {
-        //     ModelState.AddModelError("", result.Message);
-        //     return View(new TripViewModel());
-        // }
+        var result = await _tripService.GetByIdAsync(id);
 
-        //return View(Parse(result.Result));
-        return View(Parse(tripData.First(a => a.Id == id)));
+        if (!result.IsSuccessful)
+        {
+            ModelState.AddModelError("", result.Message);
+            return View(new TripViewModel());
+        }
+
+        return View(Parse(result.Result));
     }
 
     public async Task<IActionResult> Details(int id)
     {
-        // var response = await _tripService.GetByIdAsync(id);
-        //
-        // if (!response.IsSuccessful)
-        // {
-        //     ModelState.AddModelError("", response.Message);
-        //     return View(new TripViewModel());
-        // }
-        // return View(Parse(response.Result));
-        return View(Parse(tripData.First(a => a.Id == id)));
+        var response = await _tripService.GetByIdAsync(id);
+
+        if (!response.IsSuccessful)
+        {
+            ModelState.AddModelError("", response.Message);
+            return View(new TripViewModel());
+        }
+
+        return View(Parse(response.Result));
     }
 
     public async Task<IActionResult> Delete(int id)
     {
-        // var response = await _tripService.DeleteAsync(id);
-        // return Json(new GenericViewModel
-        // {
-        //     IsSuccessful = response.IsSuccessful,
-        //     ErrorMessage = response.Message
-        // });
-        var currentData = tripData.FirstOrDefault(a => a.Id ==id);
-        tripData.Remove(currentData);
+        var response = await _tripService.DeleteAsync(id);
         return Json(new GenericViewModel
         {
-            IsSuccessful = true,
-            ErrorMessage = ""
+            IsSuccessful = response.IsSuccessful,
+            ErrorMessage = response.Message
         });
     }
 
@@ -114,19 +76,16 @@ public class TripController : Controller
     {
         if (ModelState.IsValid)
         {
-            // model.Id = 0;
-            // var result = await _tripService.CreateAsync(Parse(model));
-            // if (!result.IsSuccessful)
-            // {
-            //     ModelState.AddModelError("", result.Message);
-            //     return View(model);
-            // }
-            var modelToInsert = Parse(model);
-            modelToInsert.Id = tripData.Count + 1;
-            tripData.Add(modelToInsert);
+            model.Id = 0;
+            var result = await _tripService.CreateAsync(Parse(model));
+            if (!result.IsSuccessful)
+            {
+                ModelState.AddModelError("", result.Message);
+                return View(model);
+            }
+
             return RedirectToAction("Index");
         }
-
 
         return View(model);
     }
@@ -138,23 +97,13 @@ public class TripController : Controller
     {
         if (ModelState.IsValid)
         {
-            // var result = await _tripService.EditAsync(Parse(model));
-            // if (!result.IsSuccessful)
-            // {
-            //     ModelState.AddModelError("", result.Message);
-            //     return View(model);
-            //
-            // }
-            var currentData = tripData.FirstOrDefault(a => a.Id == model.Id);
-            if (currentData is null)
+            var result = await _tripService.EditAsync(Parse(model));
+            if (!result.IsSuccessful)
             {
-                ModelState.AddModelError("", "Entity not found");
+                ModelState.AddModelError("", result.Message);
                 return View(model);
             }
-            tripData.Remove(currentData);
-            var modelToInsert = Parse(model);
-            modelToInsert.Id = model.Id;
-            tripData.Add(modelToInsert);
+
             return RedirectToAction("Index");
         }
 
@@ -169,6 +118,16 @@ public class TripController : Controller
     {
         return new Trip()
         {
+            Id = model.Id,
+            Number = model.Number,
+            EndingAmountOfFuel = model.EndingAmountOfFuel,
+            StartingAmountOfFuel = model.StartingAmountOfFuel,
+            TotalKM = model.TotalKM,
+            StartingTrucKm = model.StartingTrucKm,
+            EndingTrucKm = model.EndingTrucKm,
+            Employee = new Employee() {Id = model.EmployeeId},
+            TruckBase = new TruckBase() {Id = model.TruckBaseId},
+            TruckContainer = new TruckContainer() {Id = model.TruckContainerId}
         };
     }
 
@@ -182,10 +141,13 @@ public class TripController : Controller
             TotalKM = model.TotalKM,
             StartingTrucKm = model.StartingTrucKm,
             EndingTrucKm = model.EndingTrucKm,
-            TruckBase = model.TruckBase.Plate,
+            Employee = model.Employee.ToString(),
+            EmployeeId = model.Employee.Id,
+            TruckBase = model.TruckBase.ToString(),
             TruckBaseId = model.TruckBase.Id,
-            TruckContainer = model.TruckContainer.Plate,
-            TruckContainerId = model.TruckContainer.Id
+            TruckContainer = model.TruckContainer.ToString(),
+            TruckContainerId = model.TruckContainer.Id,
+            Number = model.Number
         };
     }
 

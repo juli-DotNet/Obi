@@ -13,8 +13,8 @@ public class TripViewModel
     public long StartingTrucKm { get; set; }
     public long EndingTrucKm { get; set; }
     public long TotalKM { get; set; }
-    public decimal StartingAmountOfFuel { get; set; }
-    public decimal EndingAmountOfFuel { get; set; }
+    public int StartingAmountOfFuel { get; set; }
+    public int EndingAmountOfFuel { get; set; }
     
     //public List<RoadData> Roads { get; set; }
     //public List<RoadExpense> Expenses { get; set; }
