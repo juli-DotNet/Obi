@@ -27,6 +27,8 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         {
             model.EndingDate = model.EndingDate.Value.ToUniversalTime();
         }
+
+        model.LeaveNote ??= String.Empty;
         return false;
     }
 

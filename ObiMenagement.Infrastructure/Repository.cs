@@ -50,6 +50,11 @@ public class Repository<T> : IRepository<T> where T : BaseModel
         return await this.dbSet.Where(predicate).ToListAsync();
     }
 
+    public async Task<int> CountAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await this.dbSet.CountAsync(predicate);
+    }
+
     public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
     {
         return await this.dbSet.AnyAsync(predicate);
