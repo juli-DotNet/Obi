@@ -99,6 +99,8 @@ $('#EmployeeId').select2({
 
             var newOption = new Option(data.data.defaultTruckBase, data.data.defaultTruckBaseId, true, true);
             $('#TruckBaseId').append(newOption).trigger('change');
+              var newOption = new Option(data.data.defaultTruckContainer, data.data.defaultTruckContainerId, true, true);
+              $('#TruckContainerId').append(newOption).trigger('change');
 
         } else {
             console.log(data);

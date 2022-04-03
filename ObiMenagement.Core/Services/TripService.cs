@@ -77,7 +77,7 @@ public class TripService : LongBaseService<Trip>, ITripService
     public async Task<int> CalculateNumber(long truckId, DateTime dateTime)
     {
         dateTime = dateTime.Date;
-        var currentNumber = await _repository.CountAsync(a => a.TruckBase.Id == truckId && a.TripDate.Date == dateTime);
+        var currentNumber = (await _repository.WhereAsync(a => a.TruckBase.Id == truckId)).Count(a => a.TripDate.Date == dateTime.Date);
         return currentNumber + 1;
     }
 }

@@ -118,7 +118,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
 
         try
         {
-            result.Result = await _unitOfWork.EmployeeRepository.WhereAsync(a => true,a=>a.Person,a=>a.DefaultTruckBase);
+            result.Result = await _unitOfWork.EmployeeRepository.WhereAsync(a => true,a=>a.Person,a=>a.DefaultTruckBase, a => a.DefaultTruckContainer);
         }
         catch (Exception e)
         {
@@ -134,7 +134,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
 
         try
         {
-            result.Result = await _unitOfWork.EmployeeRepository.FirstOrDefault(a =>a.Id==id,a=>a.Person,a=>a.DefaultTruckBase);
+            result.Result = await _unitOfWork.EmployeeRepository.FirstOrDefault(a =>a.Id==id,a=>a.Person,a=>a.DefaultTruckBase,a=>a.DefaultTruckContainer);
         }
         catch (Exception e)
         {

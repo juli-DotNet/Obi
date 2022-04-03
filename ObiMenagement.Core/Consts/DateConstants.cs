@@ -20,7 +20,7 @@ public  static class DateConstants
         {
             return DateTime.MinValue;
         }
-        return DateTime.ParseExact(dateData,Format,null);
+        return DateTime.ParseExact(dateData,Format,null).ToUniversalTime();
     }
     public static string CovertDateToString(this DateTime dateData)
     {
@@ -28,7 +28,7 @@ public  static class DateConstants
         {
             return "";
         }
-        return dateData.ToString(Format);
+        return dateData.ToLocalTime().ToString(Format);
     }
     public static string CovertDateToString(this DateTime? dateData)
     {
