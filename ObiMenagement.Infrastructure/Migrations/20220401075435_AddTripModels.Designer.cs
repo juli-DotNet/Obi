@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ObiMenagement.Infrastructure;
@@ -11,9 +12,10 @@ using ObiMenagement.Infrastructure;
 namespace ObiMenagement.Infrastructure.Migrations
 {
     [DbContext(typeof(ObiManagementDbContext))]
-    partial class ObiManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220401075435_AddTripModels")]
+    partial class AddTripModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -452,9 +454,6 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Property<int>("DefaultTruckBaseId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("DefaultTruckContainerId")
-                        .HasColumnType("integer");
-
                     b.Property<DateTime?>("EndingDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -482,8 +481,6 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("DefaultTruckBaseId");
-
-                    b.HasIndex("DefaultTruckContainerId");
 
                     b.HasIndex("ModifiedById");
 
@@ -910,9 +907,6 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Property<decimal>("TotalWage")
                         .HasColumnType("numeric");
 
-                    b.Property<DateTime>("TripDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("TruckBaseId")
                         .HasColumnType("integer");
 
@@ -1200,12 +1194,6 @@ namespace ObiMenagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ObiMenagement.Core.Models.TruckContainer", "DefaultTruckContainer")
-                        .WithMany()
-                        .HasForeignKey("DefaultTruckContainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
                         .WithMany()
                         .HasForeignKey("ModifiedById");
@@ -1219,8 +1207,6 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("DefaultTruckBase");
-
-                    b.Navigation("DefaultTruckContainer");
 
                     b.Navigation("ModifiedBy");
 

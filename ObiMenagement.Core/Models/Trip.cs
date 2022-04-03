@@ -5,6 +5,7 @@ namespace ObiMenagement.Core.Models;
 public class Trip:IdLongBaseModel
 {
     public int Number { get; set; }
+    public DateTime TripDate { get; set; }
     public TruckBase TruckBase { get; set; }
     public TruckContainer TruckContainer { get; set; }
     public Employee Employee { get; set; }

@@ -20,8 +20,19 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
             result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.Person)));
             return true;
         }
+        if (model.DefaultTruckBase.Id==0)
+        {
+            result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.DefaultTruckBase)));
+            return true;
+        }
+        if (model.DefaultTruckContainer.Id == 0)
+        {
+            result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.DefaultTruckContainer)));
+            return true;
+        }
         model.Person = await _unitOfWork.PersonRepository.FirstOrDefault(a => a.Id == model.Person.Id);
         model.DefaultTruckBase = await _unitOfWork.TruckBaseRepository.FirstOrDefault(a => a.Id == model.DefaultTruckBase.Id);
+        model.DefaultTruckContainer = await _unitOfWork.TruckContainerRepository.FirstOrDefault(a => a.Id == model.DefaultTruckContainer.Id);
         model.StartingDate = model.StartingDate.ToUniversalTime();
         if (model.EndingDate.HasValue)
         {

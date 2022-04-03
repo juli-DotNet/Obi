@@ -118,16 +118,17 @@ public class TripController : Controller
     {
         return new Trip()
         {
-            Id = model.Id,
-            Number = model.Number,
-            EndingAmountOfFuel = model.EndingAmountOfFuel,
-            StartingAmountOfFuel = model.StartingAmountOfFuel,
-            TotalKM = model.TotalKM,
-            StartingTrucKm = model.StartingTrucKm,
-            EndingTrucKm = model.EndingTrucKm,
+            Id = model.Id??0,
+            Number = model.Number??0,
+            EndingAmountOfFuel = model.EndingAmountOfFuel??0,
+            StartingAmountOfFuel = model.StartingAmountOfFuel??0,
+            TotalKM = model.TotalKM??0,
+            StartingTrucKm = model.StartingTrucKm??0,
+            EndingTrucKm = model.EndingTrucKm??0,
             Employee = new Employee() {Id = model.EmployeeId},
             TruckBase = new TruckBase() {Id = model.TruckBaseId},
-            TruckContainer = new TruckContainer() {Id = model.TruckContainerId}
+            TruckContainer = new TruckContainer() {Id = model.TruckContainerId},
+            TripDate=model.TripDate.ConvertToDate()
         };
     }
 
@@ -147,7 +148,8 @@ public class TripController : Controller
             TruckBaseId = model.TruckBase.Id,
             TruckContainer = model.TruckContainer.ToString(),
             TruckContainerId = model.TruckContainer.Id,
-            Number = model.Number
+            Number = model.Number,
+            TripDate=model.TripDate.CovertDateToString()
         };
     }
 

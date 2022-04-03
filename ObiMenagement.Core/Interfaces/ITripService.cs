@@ -5,5 +5,5 @@ namespace ObiMenagement.Core.Interfaces;
 public interface ITripService : ICrudService<Trip>
 {
 
-    public Task<int> CalculateNumber();
+    public Task<int> CalculateNumber(long truckId, DateTime dateTime);
 }

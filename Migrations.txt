@@ -1,6 +1,6 @@
 
 
-dotnet-ef  migrations add AddPriceOnTheMainModelNotOnValueObject --project ObiMenagement.Infrastructure --startup-project ObiMenagement.Web 
+dotnet-ef  migrations add UpdateTrip_addTripDate_AndEmployee_addDefaultContainer --project ObiMenagement.Infrastructure --startup-project ObiMenagement.Web 
 
 
 dotnet-ef   database update --project ObiMenagement.Infrastructure --startup-project ObiMenagement.Web 

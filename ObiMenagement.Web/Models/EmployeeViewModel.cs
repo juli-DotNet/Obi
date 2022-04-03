@@ -9,5 +9,8 @@ public class EmployeeViewModel
     public string? EndingDate { get; set; }
     public string DefaultTruckBase { get; set; }
     public int DefaultTruckBaseId { get; set; }
+
+    public string? DefaultTruckContainer { get; set; }
+    public int DefaultTruckContainerId { get; set; }
     public string? LeaveNote { get; set; }
 }
