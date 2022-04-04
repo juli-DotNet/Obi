@@ -5,6 +5,26 @@ using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Services;
 
+public class RoadDataService : IRoadDataService
+{
+    private readonly IUnitOfWork unitOfWork;
+    private readonly ILogger<TripService> logger;
+
+    public RoadDataService(IUnitOfWork unitOfWork, ILogger<TripService> logger) 
+    {
+        this.unitOfWork = unitOfWork;
+        this.logger = logger;
+    }
+    protected async Task<bool> ValidateModel(RoadData model, Response result)
+    {
+        if (model.Ro is null || model.Employee.Id == 0)
+        {
+            result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.Employee)));
+            return true;
+        }
+        return false;
+    }
+}
 public class TripService : LongBaseService<Trip>, ITripService
 {
     public TripService(IUnitOfWork unitOfWork, ILogger<TripService> logger) :
