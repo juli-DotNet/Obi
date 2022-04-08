@@ -17,4 +17,8 @@ public class Trip:IdLongBaseModel
     public int EndingAmountOfFuel { get; set; }
     public virtual List<RoadExpense> Expenses { get; set; }
     public decimal TotalWage { get; set; }
+    public override string ToString()
+    {
+        return Number.ToString();
+    }
 }

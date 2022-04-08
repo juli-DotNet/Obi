@@ -3,7 +3,7 @@ using ObiMenagement.Core.Models;
 
 namespace ObiMenagement.Core.Interfaces;
 
-public interface IRoadDataService : ICrudService<RoadData>
+public interface IRoadDataService 
 {
     Task<Response> Create(RoadData roadData,long tripId);
     Task<Response> Update(RoadData roadData, long tripId);

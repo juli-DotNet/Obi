@@ -1,17 +1,17 @@
 ﻿@using ObiMenagement.Core.Models
-@model TripViewModel
+@model RoadDataViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Road";
 }
 
 <partial name="_header" />
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="CreateRoadData">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <partial name="_form" model=@Model />
+            <partial name="_formRoad" model=@Model />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-success" />
             </div>
@@ -27,7 +27,7 @@
 <script>
         $(function () {
          var truckBaseSelect = function(value) {
-              $("#TripDate").datepicker({
+              $(".dateControl").datepicker({
                                           changeMonth: true,
                                           changeYear: true,
                                           showButtonPanel: true,
@@ -73,42 +73,49 @@
             }
         });
     }
-    $('#EmployeeId').select2({
-        placeholder: 'Select an option',
-        ajax: {
-            url: '@Url.Action("GetEmployees", "Json")',
-            data: function(params) {
-                var query = {
-                    search: params.term,
-                    page: params.page || 1
+
+     var startingLocationSelector = function(value) {
+        $('#StartingLocationId').val(value).select2({
+            placeholder: 'Select an option',
+            ajax: {
+                url: '@Url.Action("GetLocations", "Json")',
+                data: function(params) {
+                    var query = {
+                        search: params.term,
+                        page: params.page || 1
+                    }
+                    return query;
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.items
+                    };
                 }
-                return query;
-            },
-            processResults: function(data) {
-                return {
-                    results: data.items
-                };
-            }
-        }
-    }).on("change", function() {
-        var selectedEmployeeData = $('#EmployeeId').val();
-        var employeeDataUrl = '@Url.Action("EmployeeDetails","Employee")' + '/' + selectedEmployeeData;
-
-        $.get(employeeDataUrl, function(data) {
-            if (data.isSuccessful) {
-
-                var newOption = new Option(data.data.defaultTruckBase, data.data.defaultTruckBaseId, true, true);
-                $('#TruckBaseId').append(newOption).trigger('change');
-                  var newOption = new Option(data.data.defaultTruckContainer, data.data.defaultTruckContainerId, true, true);
-                  $('#TruckContainerId').append(newOption).trigger('change');
-
-            } else {
-                console.log(data);
             }
         });
-
-
-    });
+    }
+      var destinationLocationSelector = function(value) {
+        $('#DestinationLocationId').val(value).select2({
+            placeholder: 'Select an option',
+            ajax: {
+                url: '@Url.Action("GetLocations", "Json")',
+                data: function(params) {
+                    var query = {
+                        search: params.term,
+                        page: params.page || 1
+                    }
+                    return query;
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.items
+                    };
+                }
+            }
+        });
+    }
+    startingLocationSelector("@Model.StartingLocationId")
+    destinationLocationSelector("@Model.DestinationLocationId")
     truckBaseSelect("@Model.TruckBaseId");
     trackContaineSelector("@Model.TruckContainerId");
 

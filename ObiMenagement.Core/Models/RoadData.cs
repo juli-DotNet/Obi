@@ -14,9 +14,8 @@ public class RoadData:IdLongBaseModel
     public virtual Location StartingLocation { get; set; }
     public virtual Location DestinationLocation { get; set; }
     public long TotalKM { get; set; }
-    public decimal Price { get; set; } //calculated
+    public decimal Price { get; set; } 
     public virtual List<RoadClient> Clients { get; set; }
     public virtual List<RoadExpense> RoadFuels { get; set; }
     public bool IsExport { get; set; }
-    public bool IsEmpty { get; set; }
 }
