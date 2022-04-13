@@ -68,7 +68,9 @@ public class RoadDataService : LongBaseService<RoadData>, IRoadDataService
     {
         return await RunAsync(async () =>
         {
-            return await unitOfWork.RoadDataRepository.WhereAsync(a => a.Trip.Id == tripId, a => a.Trip, a => a.TruckContainer, a => a.TruckBase, a => a.StartingLocation, a => a.DestinationLocation);
+            return await unitOfWork.RoadDataRepository.WhereAsync(a => a.Trip.Id == tripId, 
+                a => a.Trip, a => a.TruckContainer, a => a.TruckBase, a => a.StartingLocation, a => a.StartingLocation.City, a => a.StartingLocation.Country,
+                a => a.DestinationLocation, a => a.DestinationLocation.City, a => a.DestinationLocation.Country);
         });
     }
 
@@ -76,7 +78,8 @@ public class RoadDataService : LongBaseService<RoadData>, IRoadDataService
     {
         return await RunAsync(async () =>
         {
-            return await unitOfWork.RoadDataRepository.FirstOrDefault(a => a.Id == roadDataId, a => a.Trip,a=>a.TruckContainer, a => a.TruckBase, a => a.StartingLocation, a => a.DestinationLocation);
+            return await unitOfWork.RoadDataRepository.FirstOrDefault(a => a.Id == roadDataId, a => a.Trip, a => a.TruckContainer, a => a.TruckBase, a => a.StartingLocation, a => a.StartingLocation.City, a => a.StartingLocation.Country,
+                a => a.DestinationLocation, a => a.DestinationLocation.City, a => a.DestinationLocation.Country);
         });
     }
 

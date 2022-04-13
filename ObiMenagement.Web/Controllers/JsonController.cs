@@ -236,7 +236,7 @@ public class JsonController : Controller
         return new SelectDataDTO()
         {
             Id = model.Id.ToString(),
-            Text = $"{model.Country.Name}:{model.City.Name}:{model.Name}"
+            Text = model.ToString()
         };
     }
     private SelectDataDTO Parse(Person model)

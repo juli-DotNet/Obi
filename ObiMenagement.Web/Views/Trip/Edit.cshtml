@@ -136,11 +136,11 @@
                         {
                             targets: 6, render: function (data) {
                                     return " " +
-                                    '<button  type="button" data-id="' + data + '"  class="btn btn-success detailRoad">Details</button>'+
-                                      "&nbsp; &nbsp;" +
-                                    '<button  type="button" data-id="' + data + '"  class="btn btn-success editRoad">Edit</button>'+
-                                      "&nbsp; &nbsp;" +
-                                    +'<button  type="button" data-site-id="' + data + '"  class="btn btn-danger removeRoad" >Remove</button>'
+                                    '<button  type="button" data-id="' + data + '"  class="btn btn-info detailRoad">Details</button>'+
+                                      '&nbsp; &nbsp;' +
+                                    '<button  type="button" data-id="' + data + '"  class="btn btn-primary editRoad">Edit</button>'+
+                                       '&nbsp; &nbsp;' +
+                                    '<button  type="button" data-id="' + data + '"  class="btn btn-danger removeRoad">Remove</button>'
 
                             }
                         }
@@ -187,7 +187,7 @@
                     });
                 return false;
             });
-        $(".btn-ok").on("click", function (event) {
+        $("#confirm-delete .btn-ok").on("click", function (event) {
             event.preventDefault();
             var url = $(this).attr("href");
             $.ajax

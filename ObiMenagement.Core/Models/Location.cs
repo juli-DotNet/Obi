@@ -6,4 +6,8 @@ public class Location : IdBaseModel
     public decimal KmFromMainCompany { get; set; }
     public Country Country { get; set; }
     public City City { get; set; }
+    public override string ToString()
+    {
+        return $"{Country.Name}:{City.Name}:{Name}";
+    }
 }
