@@ -133,4 +133,13 @@ public class RoadExpenseService : LongBaseService<RoadExpense>, IRoadExpenseServ
             a=>a.Payment.Currency
         };
     }
+
+    public async Task<Response<List<RoadExpense>>> GetAllByRoad(long roadDataId)
+    {
+        return await RunAsync(async () =>
+        {
+            return await _unitOfWork.RoadExpenseRepository.WhereAsync(a => a.RoadData.Id == roadDataId && a.IsValid, GenerateIncludes().ToArray());
+
+        });
+    }
 }

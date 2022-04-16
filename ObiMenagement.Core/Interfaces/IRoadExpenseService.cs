@@ -10,4 +10,5 @@ public interface IRoadExpenseService
     Task<Response> Delete(long id);
     Task<Response<RoadExpense>> GetById(long roadDataId);
     Task<Response<List<RoadExpense>>> GetAll(long tripId);
+    Task<Response<List<RoadExpense>>> GetAllByRoad(long roadDataId);
 }
