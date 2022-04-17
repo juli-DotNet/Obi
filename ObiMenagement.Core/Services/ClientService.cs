@@ -2,6 +2,7 @@
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
+using System.Linq.Expressions;
 
 namespace ObiMenagement.Core.Services;
 
@@ -105,40 +106,6 @@ public class ClientService : BaseService<Client>, IClientService
         return result;
     }
 
-    public override async Task<Response<IEnumerable<Client>>> GetAllAsync(string search = null)
-    {
-        var result = new Response<IEnumerable<Client>>();
-
-        try
-        {
-            result.Result = await _repository.WhereAsync(a => true, a => a.Location);
-
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "failed to delete the model");
-            result.Exception = e;
-            Logger.Instance.LogError(e);
-        }
-        return result;
-    }
-    public override async Task<Response<Client>> GetByIdAsync(int id)
-    {
-        var result = new Response<Client>();
-
-        try
-        {
-            result.Result = await _repository.FirstOrDefault(a => a.Id == id, a => a.Location);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "failed to delete the model");
-            result.Exception = e;
-            Logger.Instance.LogError(e);
-        }
-        return result;
-    }
-
     protected override async Task<bool> ValidateModel(Client model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Name))
@@ -153,5 +120,13 @@ public class ClientService : BaseService<Client>, IClientService
         }
         model.Location = await unitOfWork.LocationRepository.FirstOrDefault(a => a.Id == model.Location.Id);
         return false;
+    }
+
+    protected override List<Expression<Func<Client, object>>> DefaultIncludes()
+    {
+        return new List<Expression<Func<Client, object>>>
+        {
+            a=>a.Location
+        };
     }
 }

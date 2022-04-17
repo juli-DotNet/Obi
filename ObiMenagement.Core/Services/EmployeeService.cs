@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
+using System.Linq.Expressions;
 
 namespace ObiMenagement.Core.Services;
 
@@ -9,7 +10,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public EmployeeService(IUnitOfWork unitOfWork,ILogger<EmployeeService> logger):base(unitOfWork,unitOfWork.EmployeeRepository,logger)
+    public EmployeeService(IUnitOfWork unitOfWork, ILogger<EmployeeService> logger) : base(unitOfWork, unitOfWork.EmployeeRepository, logger)
     {
         _unitOfWork = unitOfWork;
     }
@@ -20,7 +21,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
             result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.Person)));
             return true;
         }
-        if (model.DefaultTruckBase.Id==0)
+        if (model.DefaultTruckBase.Id == 0)
         {
             result.Exception = new ObiException(ErrorMessages.NotNull(nameof(model.DefaultTruckBase)));
             return true;
@@ -43,108 +44,7 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
         return false;
     }
 
-    public override async Task<Response> CreateAsync(Employee model)
-    {
-        var result = new Response();
-        try
-        {
-            if (await ValidateModel(model, result)) return result;
-            
-            await _unitOfWork.EmployeeRepository.InsertAsync(model);
-            await _unitOfWork.SaveChangesAsync();
-
-        }
-        catch (Exception e)
-        {
-            Logger.Instance.LogError(e);
-            result.Exception = e;
-        }
-
-        return result;
-    }
-
-    public override async Task<Response> DeleteAsync(int id)
-    {
-        var result = new Response();
-
-        try
-        {
-            if (!await _unitOfWork.EmployeeRepository.AnyAsync(a => a.Id ==id && a.IsValid))
-            {
-                result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(id));
-                return result;
-            }
-
-            await _unitOfWork.EmployeeRepository.DeleteAsync(id);
-            await _unitOfWork.SaveChangesAsync();
-        }
-        catch (Exception e)
-        {
-            Logger.Instance.LogError(e);
-            result.Exception = e;
-        }
-
-        return result;
-    }
-
-    public override async Task<Response> EditAsync(Employee model)
-    {
-        var result = new Response();
-        try
-        {
-            if (!await _unitOfWork.EmployeeRepository.AnyAsync(a => a.Id ==model.Id && a.IsValid))
-            {
-                result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(model.Id));
-                return result;
-            }
-            if (await ValidateModel(model, result)) return result;
-
-            await _unitOfWork.EmployeeRepository.UpdateAsync(model);
-            await _unitOfWork.SaveChangesAsync();
-
-        }
-        catch (Exception e)
-        {
-            Logger.Instance.LogError(e);
-            result.Exception = e;
-        }
-
-        return result;
-    }
-
-    public override async Task<Response<IEnumerable<Employee>>> GetAllAsync(string search=null)
-    {
-        var result = new Response<IEnumerable<Employee>>();
-
-        try
-        {
-            result.Result = await _unitOfWork.EmployeeRepository.WhereAsync(a => true,a=>a.Person,a=>a.DefaultTruckBase, a => a.DefaultTruckContainer);
-        }
-        catch (Exception e)
-        {
-            result.Exception = e;
-            Logger.Instance.LogError(e);
-        }
-        return result;
-    }
-
-    public override async Task<Response<Employee>> GetByIdAsync(int id)
-    {
-        var result = new Response<Employee>();
-
-        try
-        {
-            result.Result = await _unitOfWork.EmployeeRepository.FirstOrDefault(a =>a.Id==id,a=>a.Person,a=>a.DefaultTruckBase,a=>a.DefaultTruckContainer);
-        }
-        catch (Exception e)
-        {
-            result.Exception = e;
-            Logger.Instance.LogError(e);
-        }
-        return result;
-    }
-
-    public  async Task<Response<IEnumerable<Employee>>> GetAllWithoutMetadataAsync()
+    public async Task<Response<IEnumerable<Employee>>> GetAllWithoutMetadataAsync()
     {
         var result = new Response<IEnumerable<Employee>>();
 
@@ -158,5 +58,14 @@ public class EmployeeService : BaseService<Employee>, IEmployeeService
             Logger.Instance.LogError(e);
         }
         return result;
+    }
+
+    protected override List<Expression<Func<Employee, object>>> DefaultIncludes()
+    {
+        return new List<Expression<Func<Employee, object>>> {
+          a=>a.Person,
+          a=>a.DefaultTruckBase,
+          a=>a.DefaultTruckContainer
+      };
     }
 }

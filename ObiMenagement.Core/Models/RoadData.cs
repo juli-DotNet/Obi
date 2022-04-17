@@ -7,7 +7,7 @@ public class RoadData:IdLongBaseModel
 {
 
     public virtual Trip Trip { get; set; }
-    public virtual TruckBase TruckBase { get; set; }
+    public virtual TruckBase TruckBase { get; set; } //TODO: this needs to be removed
     public virtual TruckContainer TruckContainer { get; set; }
     public DateTime StartingDate { get; set; }
     public DateTime EndingDate { get; set; }

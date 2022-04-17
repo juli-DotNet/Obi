@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
+using System.Linq.Expressions;
 
 namespace ObiMenagement.Core.Services;
 public abstract class BaseService<T> : CommonRunner where T : IdBaseModel
@@ -17,7 +18,7 @@ public abstract class BaseService<T> : CommonRunner where T : IdBaseModel
         this._logger = logger;
     }
     protected abstract Task<bool> ValidateModel(T model, Response result);
-
+    protected abstract List<Expression<Func<T, object>>> DefaultIncludes();
     #region CRUD
     public virtual async Task<Response> CreateAsync(T model)
     {
@@ -97,7 +98,7 @@ public abstract class BaseService<T> : CommonRunner where T : IdBaseModel
 
         try
         {
-            result.Result = await _repository.WhereAsync(a => true);
+            result.Result = await _repository.WhereAsync(a => a.IsValid,DefaultIncludes().ToArray());
         }
         catch (Exception e)
         {
@@ -114,7 +115,7 @@ public abstract class BaseService<T> : CommonRunner where T : IdBaseModel
 
         try
         {
-            result.Result = await _repository.FirstOrDefault(a => a.Id == id);
+            result.Result = await _repository.FirstOrDefault(a => a.Id == id && a.IsValid, DefaultIncludes().ToArray());
         }
         catch (Exception e)
         {
