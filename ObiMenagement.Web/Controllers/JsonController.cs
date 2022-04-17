@@ -16,19 +16,21 @@ public class JsonController : Controller
     private readonly ICurrencyService _currencyService;
     private readonly IEmployeeService _employeeService;
     private readonly ITrackContainerService _trackContainerService;
+    private readonly IExpenseTypeService _expenseTypeService;
 
     public JsonController(ICountryService countryService, ICityService cityService, IPersonService personService, 
         ITrackBaseService trackBaseService, ILocationService locationService,ICurrencyService currencyService,
-        IEmployeeService employeeService,ITrackContainerService trackContainerService)
+        IEmployeeService employeeService,ITrackContainerService trackContainerService,IExpenseTypeService expenseTypeService)
     {
         _countryService = countryService;
-        this._cityService = cityService;
-        this._personService = personService;
-        this._trackBaseService = trackBaseService;
-        this._locationService = locationService;
-        this._currencyService = currencyService;
+        _cityService = cityService;
+        _personService = personService;
+        _trackBaseService = trackBaseService;
+        _locationService = locationService;
+        _currencyService = currencyService;
         _employeeService = employeeService;
         _trackContainerService = trackContainerService;
+        _expenseTypeService = expenseTypeService;
     }
     [HttpGet]
     public async Task<IActionResult> GetCountries(string search, int page)
@@ -205,8 +207,35 @@ public class JsonController : Controller
 
         return Json(result);
     }
-    
-    
+
+
+    [HttpGet]
+    public async Task<IActionResult> GetExpenseTypes(string search, int page)
+    {
+        search ??= "";
+        var serviceResponse = await _expenseTypeService.GetAllAsync();
+
+        var result = new JsonGenericModel();
+        if (serviceResponse.IsSuccessful)
+        {
+            result.IsSuccessful = true;
+            result.Items = serviceResponse.Result.Select(a => Parse(a)).Where(a => a.Text.Contains(search)).ToList();
+        }
+        else
+        {
+            result.ErrorMessage = serviceResponse.Message;
+        }
+
+        return Json(result);
+    }
+    private SelectDataDTO Parse(ExpenseType model)
+    {
+        return new SelectDataDTO()
+        {
+            Id = model.Id.ToString(),
+            Text = model.Name.ToString()
+        };
+    }
     private SelectDataDTO Parse(TruckContainer model)
     {
         return new SelectDataDTO()

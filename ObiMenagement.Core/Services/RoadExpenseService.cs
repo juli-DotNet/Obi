@@ -36,7 +36,7 @@ public class RoadExpenseService : LongBaseService<RoadExpense>, IRoadExpenseServ
                 throw new ObiException(ErrorMessages.EntityDoesntExist(id));
             }
             await _unitOfWork.RoadExpenseRepository.DeleteAsync(id);
-
+            await _unitOfWork.SaveChangesAsync();
         });
     }
 
@@ -115,9 +115,17 @@ public class RoadExpenseService : LongBaseService<RoadExpense>, IRoadExpenseServ
         {
             model.RoadData = await _unitOfWork.RoadDataRepository.FirstOrDefault(a => a.Id == model.RoadData.Id);
         }
+        else
+        {
+            model.RoadData = null;
+        }
         if (model.Country != null && model.Country.Id > 0)
         {
             model.Country = await _unitOfWork.CountryRepository.FirstOrDefault(a => a.Id == model.Country.Id);
+        }
+        else
+        {
+            model.Country = null;
         }
 
         return false;

@@ -7,5 +7,9 @@ public class ExpenseType:IdBaseModel
     public decimal Price { get; set; }
     public bool IsFuel { get; set; }
     public bool IsPrepaymentGivenToEmployees { get; set; }
-    
+    public override string ToString()
+    {
+        return Name;
+    }
+
 }

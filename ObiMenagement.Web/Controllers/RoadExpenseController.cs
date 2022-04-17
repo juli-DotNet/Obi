@@ -9,10 +9,12 @@ namespace ObiMenagement.Web.Controllers;
 public class RoadExpenseController : Controller
 {
     private readonly IRoadExpenseService _roadExpenseService;
+    private readonly IRoadDataService _roadDataService;
 
-    public RoadExpenseController(IRoadExpenseService roadExpenseService)
+    public RoadExpenseController(IRoadExpenseService roadExpenseService, IRoadDataService roadDataService)
     {
         this._roadExpenseService = roadExpenseService;
+        this._roadDataService = roadDataService;
     }
 
     public async Task<IActionResult> LoadData(long? tripId, long? roadDataId)
@@ -44,11 +46,17 @@ public class RoadExpenseController : Controller
 
     public async Task<IActionResult> Create(long? tripId, long? roadDataId)
     {
-        return View(new RoadExpenseViewModel()
+        var model = new RoadExpenseViewModel()
         {
             RoadDataId = roadDataId,
             TripId = tripId ?? 0
-        });
+        };
+        if (roadDataId > 0)
+        {
+            var roadData = await _roadDataService.GetById(roadDataId.Value);
+            model.TripId = roadData.Result.Trip.Id;
+        }
+        return View(model);
     }
     [HttpPost]
     [ValidateAntiForgeryToken]

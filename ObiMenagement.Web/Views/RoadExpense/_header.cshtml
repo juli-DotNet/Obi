@@ -1,9 +1,21 @@
+@model RoadExpenseViewModel
 <div class="row ">
     <div class="col-md-11">
         <h2 class="d-inline">RoadExpense - @ViewData["Title"]</h2>
     </div>
     <div class="col-md-1">
-        <a asp-action="Index" class="btn btn-light">Back</a>
+        @if (Model.RoadDataId>0)
+        {
+            <text> 
+                <a asp-action="EditRoadData" asp-controller="Trip" asp-route-id="@Model.RoadDataId" class="btn btn-light">Back</a>
+            </text>
+        }
+        else
+        {
+            <text>
+               <a asp-action="Edit"  asp-controller="Trip" asp-route-id="@Model.TripId" class="btn btn-light">Back</a>
+        </text>
+        }
     </div>
 </div>
 <hr />

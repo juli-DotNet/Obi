@@ -11,6 +11,8 @@ public class RoadExpenseEntityTypeConfiguration : IEntityTypeConfiguration<RoadE
         builder
             .Property(b => b.Name).HasMaxLength(200)
             .IsRequired();
+        builder
+           .Property(b => b.Note).HasMaxLength(2000);
         builder.OwnsOne(b => b.Payment);
     }
 }
