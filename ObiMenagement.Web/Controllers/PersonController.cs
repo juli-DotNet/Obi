@@ -21,18 +21,18 @@ public class PersonController : Controller
         return new Person()
         {
             Id = model.Id,
-            Name=model.Name,
-            BirthDay=model.BirthDay,
-            DrivingLicenceExpiringDate=model.DrivingLicenceExpiringDate,
-            Email=model.Email,
-            IsValid=true,
-            LastName=model.LastName,
-            PassportExpiringDate=model.PassportExpiringDate,
-            PersonalNumber=model.PersonalNumber,
-            PhoneNumber=model.PhoneNumber
+            Name = model.Name,
+            BirthDay = model.BirthDay,
+            DrivingLicenceExpiringDate = model.DrivingLicenceExpiringDate,
+            Email = model.Email,
+            IsValid = true,
+            LastName = model.LastName,
+            PassportExpiringDate = model.PassportExpiringDate,
+            PersonalNumber = model.PersonalNumber,
+            PhoneNumber = model.PhoneNumber
         };
     }
-    PersonViewModel Parse(Person model)
+    public static PersonViewModel Parse(Person model)
     {
         return new PersonViewModel()
         {

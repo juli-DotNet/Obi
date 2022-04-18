@@ -23,5 +23,5 @@
       <ProjectReference Include="..\ObiMenagement.Core\ObiMenagement.Core.csproj" />
       <ProjectReference Include="..\ObiMenagement.Infrastructure\ObiMenagement.Infrastructure.csproj" />
     </ItemGroup>
-
+    
 </Project>

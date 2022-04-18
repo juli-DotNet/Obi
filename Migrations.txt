@@ -1,0 +1,6 @@
+
+
+dotnet-ef  migrations add UpdateRoadExpense_makeNoteOptional --project ObiMenagement.Infrastructure --startup-project ObiMenagement.Web 
+
+
+dotnet-ef   database update --project ObiMenagement.Infrastructure --startup-project ObiMenagement.Web 

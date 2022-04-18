@@ -1,0 +1,117 @@
+﻿@using ObiMenagement.Core.Models
+@model TripViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<partial name="_header" />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <partial name="_form" model=@Model />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+        $(function () {
+         var truckBaseSelect = function(value) {
+              $("#TripDate").datepicker({
+                                          changeMonth: true,
+                                          changeYear: true,
+                                          showButtonPanel: true,
+                                          dateFormat: '@DateConstants.FormatUI'
+
+                                          });
+        $('#TruckBaseId').val(value).select2({
+            placeholder: 'Select an option',
+            ajax: {
+                url: '@Url.Action("GetTruckBases", "Json")',
+                data: function(params) {
+                    var query = {
+                        search: params.term,
+                        page: params.page || 1
+                    }
+                    return query;
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.items
+                    };
+                }
+            }
+        });
+    }
+    var trackContaineSelector = function(value) {
+        $('#TruckContainerId').val(value).select2({
+            placeholder: 'Select an option',
+            ajax: {
+                url: '@Url.Action("GetTruckContainers", "Json")',
+                data: function(params) {
+                    var query = {
+                        search: params.term,
+                        page: params.page || 1
+                    }
+                    return query;
+                },
+                processResults: function(data) {
+                    return {
+                        results: data.items
+                    };
+                }
+            }
+        });
+    }
+    $('#EmployeeId').select2({
+        placeholder: 'Select an option',
+        ajax: {
+            url: '@Url.Action("GetEmployees", "Json")',
+            data: function(params) {
+                var query = {
+                    search: params.term,
+                    page: params.page || 1
+                }
+                return query;
+            },
+            processResults: function(data) {
+                return {
+                    results: data.items
+                };
+            }
+        }
+    }).on("change", function() {
+        var selectedEmployeeData = $('#EmployeeId').val();
+        var employeeDataUrl = '@Url.Action("EmployeeDetails","Employee")' + '/' + selectedEmployeeData;
+
+        $.get(employeeDataUrl, function(data) {
+            if (data.isSuccessful) {
+
+                var newOption = new Option(data.data.defaultTruckBase, data.data.defaultTruckBaseId, true, true);
+                $('#TruckBaseId').append(newOption).trigger('change');
+                  var newOption = new Option(data.data.defaultTruckContainer, data.data.defaultTruckContainerId, true, true);
+                  $('#TruckContainerId').append(newOption).trigger('change');
+
+            } else {
+                console.log(data);
+            }
+        });
+
+
+    });
+    truckBaseSelect("@Model.TruckBaseId");
+    trackContaineSelector("@Model.TruckContainerId");
+
+        });
+</script>
+}

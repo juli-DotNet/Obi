@@ -1,0 +1,53 @@
+@model RoadExpenseViewModel
+
+<input asp-for="Id" hidden />
+<input asp-for="TripId" hidden />
+<input asp-for="RoadDataId" hidden />
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <input asp-for="Name" class="form-control" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Note" class="control-label"></label>
+    <input asp-for="Note" class="form-control" />
+    <span asp-validation-for="Note" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="ExpenseType" class="control-label"></label>
+    <select asp-for="ExpenseTypeId" class="form-control selectAdd">
+        <option selected value="@Model.ExpenseTypeId">@Model.ExpenseType</option>
+    </select>
+    <span asp-validation-for="ExpenseTypeId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Quantity" class="control-label"></label>
+    <input asp-for="Quantity" class="form-control" />
+    <span asp-validation-for="Quantity" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Price" class="control-label"></label>
+    <input asp-for="Price" class="form-control" />
+    <span asp-validation-for="Price" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Currency" class="control-label"></label>
+    <select asp-for="CurrencyId" class="form-control selectAdd">
+        <option selected value="@Model.CurrencyId">@Model.Currency</option>
+    </select>
+    <span asp-validation-for="CurrencyId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="PaymentType" class="control-label"></label>
+    <select asp-for="PaymentTypeId" class="form-control selectAdd">
+        <option selected value="@Model.PaymentTypeId">@Model.PaymentType</option>
+    </select>
+    <span asp-validation-for="PaymentTypeId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Country" class="control-label"></label>
+    <select asp-for="CountryId" class="form-control selectAdd">
+        <option selected value="@Model.CountryId">@Model.Country</option>
+    </select>
+    <span asp-validation-for="CountryId" class="text-danger"></span>
+</div>

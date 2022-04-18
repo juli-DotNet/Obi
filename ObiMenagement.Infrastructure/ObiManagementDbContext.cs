@@ -6,12 +6,12 @@ using ObiMenagement.Infrastructure.Configurations;
 
 namespace ObiMenagement.Infrastructure;
 
-public class ObiManagementDbContext:IdentityDbContext
+public class ObiManagementDbContext : IdentityDbContext
 {
     public ObiManagementDbContext(DbContextOptions<ObiManagementDbContext> options)
         : base(options)
     {
-        
+
     }
     public DbSet<City> City { get; set; }
     public DbSet<Country> Country { get; set; }
@@ -21,11 +21,18 @@ public class ObiManagementDbContext:IdentityDbContext
     public DbSet<TruckBase> TruckBase { get; set; }
     public DbSet<TruckContainer> TruckContainer { get; set; }
     public DbSet<Location> Location { get; set; }
-    
+    public DbSet<Client> Client { get; set; }
+    public DbSet<ClientContact> ClientContact { get; set; }
+    public DbSet<RoadClient> RoadClient { get; set; }
+    public DbSet<ExpenseType> ExpenseType { get; set; }
+    public DbSet<Trip> Trip { get; set; }
+    public DbSet<RoadData> RoadData { get; set; }
+    public DbSet<RoadExpense> RoadExpense { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CountryEntityTypeConfiguration).Assembly);
         base.OnModelCreating(modelBuilder);
     }
-    
+
 }
