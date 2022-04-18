@@ -128,6 +128,4 @@ public abstract class LongBaseService<T>:CommonRunner where T : IdLongBaseModel
     }
 
     #endregion
-
-
 }

@@ -50,7 +50,7 @@ public abstract class CommonRunner
     #region Run Async
 
     #region Not implemented on c# yet
-    //doesnt work bc aync land cant be converted to expression 
+    //doesnt work bc async land cant be converted to expression 
     //public async Task<Response<T>> RunAsync<T>(Expression<Func<Task<T>>> method)
     //{
     //    var result = new Response<T>();
