@@ -22,11 +22,12 @@ public class EmployeeController : Controller
         return new Employee()
         {
             Id = model.Id,
-            EndingDate=model.EndingDate,
+            EndingDate=model.EndingDate.TryConvertToDate(),
             LeaveNote=model.LeaveNote,
-            StartingDate=model.StartingDate,
+            StartingDate=model.StartingDate.ConvertToDate(),
             Person=new Person { Id=model.PersonID},
-            DefaultTruckBase=new TruckBase { Id=model.DefaultTruckBaseId}
+            DefaultTruckBase=new TruckBase { Id=model.DefaultTruckBaseId},
+            DefaultTruckContainer=new TruckContainer { Id=model.DefaultTruckContainerId}
         };
     }
     EmployeeViewModel Parse(Employee model)
@@ -34,14 +35,19 @@ public class EmployeeController : Controller
         var result= new EmployeeViewModel()
         {
             Id = model.Id,
-            EndingDate=model.EndingDate,
+            EndingDate=model.EndingDate.CovertDateToString(),
             LeaveNote=model.LeaveNote,
-            StartingDate=model.StartingDate
+            StartingDate=model.StartingDate.CovertDateToString()
         };
         if (model.DefaultTruckBase is not null)
         {
             result.DefaultTruckBaseId = model.DefaultTruckBase.Id;
-            result.DefaultTruckBase = $"{model.DefaultTruckBase.Plate}_{model.DefaultTruckBase.Color}";
+            result.DefaultTruckBase =model.DefaultTruckBase.ToString();
+        }
+        if (model.DefaultTruckContainer is not null)
+        {
+            result.DefaultTruckContainerId = model.DefaultTruckContainer.Id;
+            result.DefaultTruckContainer = model.DefaultTruckContainer.ToString();
         }
         if (model.Person is not null)
         {
@@ -131,6 +137,25 @@ public class EmployeeController : Controller
             return View(new EmployeeViewModel());
         }
         return View(Parse(response.Result));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> EmployeeDetails(int id)
+    {
+        var response = await _employeeService.GetByIdAsync(id);
+
+        var result = new DataViewModel<EmployeeViewModel>();
+        if (response.IsSuccessful)
+        {
+            result.IsSuccessful = true;
+            result.Data = Parse(response.Result);
+        }
+        else
+        {
+            result.ErrorMessage = response.Message;
+        }
+
+        return Json(result);
     }
     public async Task<IActionResult> Delete(int id)
     {

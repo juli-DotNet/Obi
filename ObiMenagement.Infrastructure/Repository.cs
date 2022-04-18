@@ -11,8 +11,8 @@ public class Repository<T> : IRepository<T> where T : BaseModel
     //for migrations
     public Repository()
     {
-        
     }
+
     private readonly ObiManagementDbContext db;
     private DbSet<T> dbSet;
 
@@ -26,45 +26,61 @@ public class Repository<T> : IRepository<T> where T : BaseModel
     {
         return await dbSet.ToListAsync();
     }
+
     public async Task<T> GetByIdAsync(object id)
     {
         return await dbSet.FindAsync(id);
     }
+
     public async Task InsertAsync(T obj)
     {
         obj.IsValid = true;
+        obj.CreatedOn = DateTime.UtcNow;
+        obj.ModifiedOn = DateTime.UtcNow;
         await dbSet.AddAsync(obj);
     }
+
     public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
     {
         return this.dbSet.Where(predicate);
     }
+
     public async Task<List<T>> WhereAsync(Expression<Func<T, bool>> predicate)
     {
         return await this.dbSet.Where(predicate).ToListAsync();
+    }
+
+    public async Task<int> CountAsync(Expression<Func<T, bool>> predicate)
+    {
+        return await this.dbSet.CountAsync(predicate);
     }
 
     public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
     {
         return await this.dbSet.AnyAsync(predicate);
     }
+
     public async Task SaveAsync()
     {
         await db.SaveChangesAsync();
     }
+
     public async Task DeleteAsync(object id)
     {
         T getObjById = await dbSet.FindAsync(id);
         dbSet.Remove(getObjById);
     }
+
     public Task UpdateAsync(T obj)
     {
         obj.IsValid = true;
+        obj.ModifiedOn = DateTime.UtcNow;
         db.Entry(obj).State = EntityState.Modified;
         return Task.CompletedTask;
     }
 
-    public async Task<List<T>> WhereAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+    public async Task<List<T>> WhereAsync(Expression<Func<T, bool>> predicate,
+        params Expression<Func<T, object>>[] includes)
     {
         IIncludableQueryable<T, object> query = null;
 
@@ -72,10 +88,12 @@ public class Repository<T> : IRepository<T> where T : BaseModel
         {
             query = dbSet.Include(includes[0]);
         }
+
         for (int queryIndex = 1; queryIndex < includes.Length; ++queryIndex)
         {
             query = query.Include(includes[queryIndex]);
         }
+
         if (query is null)
         {
             return await dbSet.AsNoTracking().Where(predicate).ToListAsync();
@@ -84,7 +102,8 @@ public class Repository<T> : IRepository<T> where T : BaseModel
         return await query.AsNoTracking().Where(predicate).ToListAsync();
     }
 
-    public async Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+    public async Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate,
+        params Expression<Func<T, object>>[] includes)
     {
         IIncludableQueryable<T, object> query = null;
 
@@ -92,14 +111,17 @@ public class Repository<T> : IRepository<T> where T : BaseModel
         {
             query = dbSet.Include(includes[0]);
         }
+
         for (int queryIndex = 1; queryIndex < includes.Length; ++queryIndex)
         {
             query = query.Include(includes[queryIndex]);
         }
+
         if (query is null)
         {
             return await dbSet.FirstOrDefaultAsync(predicate);
         }
+
         return await query.FirstOrDefaultAsync(predicate);
     }
 }

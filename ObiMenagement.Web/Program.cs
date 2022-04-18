@@ -28,6 +28,9 @@ builder.Services.AddScoped<ITrackContainerService, TrackContainerService>();
 builder.Services.AddScoped<IExpenseTypeService, ExpenseTypeService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IRoadClientService, RoadClientService>();
+builder.Services.AddScoped<ITripService, TripService>();
+builder.Services.AddScoped<IRoadDataService, RoadDataService>();
+builder.Services.AddScoped<IRoadExpenseService, RoadExpenseService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

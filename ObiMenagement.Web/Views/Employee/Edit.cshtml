@@ -1,4 +1,5 @@
-﻿@model EmployeeViewModel
+﻿@using ObiMenagement.Core.Models
+@model EmployeeViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -40,7 +41,9 @@
 @section Scripts{
 
 <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+ <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 
 
 <script>
@@ -72,6 +75,58 @@
                 });
             return false;
         });
+          $("#StartingDate").datepicker({
+                                           changeMonth: true,
+                                           changeYear: true,
+                                           showButtonPanel: true,
+                                           // yearRange: "-100:+0",
+                                           dateFormat: '@DateConstants.FormatUI'
+                                       
+                                       });
+         $("#EndingDate").datepicker({
+                                                                                changeMonth: true,
+                                                                                changeYear: true,
+                                                                                showButtonPanel: true,
+                                                                                dateFormat: '@DateConstants.FormatUI'
+                                                                            
+                                                                            });
+         $('#PersonID').select2({
+                    placeholder: 'Select an option',
+                    ajax: {
+                        url: '@Url.Action("GetPersons", "Json")',
+                        data: function (params) {
+                            var query = {
+                                search: params.term,
+                                page: params.page || 1
+                            }
+                            return query;
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: data.items
+                            };
+                        }
+                    }
+         });
+
+         $('#DefaultTruckBaseId').select2({
+                    placeholder: 'Select an option',
+                    ajax: {
+                        url: '@Url.Action("GetTruckBases", "Json")',
+                        data: function (params) {
+                            var query = {
+                                search: params.term,
+                                page: params.page || 1
+                            }
+                            return query;
+                        },
+                        processResults: function (data) {
+                            return {
+                                results: data.items
+                            };
+                        }
+                    }
+         });
         
     });
 

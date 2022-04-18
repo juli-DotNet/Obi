@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using ObiMenagement.Core.Common;
 using ObiMenagement.Core.Interfaces;
 using ObiMenagement.Core.Models;
+using System.Linq.Expressions;
 
 namespace ObiMenagement.Core.Services;
 
@@ -13,17 +14,6 @@ public class CityService : BaseService<City>, ICityService
     {
         _unitOfWork = unitOfWork;
     }
-    public async Task<Response> CreateAsync(City model)
-    {
-        var result = new Response();
-        if (await ValidateModel(model, result)) return result;
-
-        model.Country = await _unitOfWork.CountryRepository.FirstOrDefault(a => a.Id == model.Country.Id);
-        await _unitOfWork.CityRepository.InsertAsync(model);
-        await _unitOfWork.SaveChangesAsync();
-        return result;
-    }
-
     protected override async Task<bool> ValidateModel(City model, Response result)
     {
         if (string.IsNullOrWhiteSpace(model.Name))
@@ -43,46 +33,11 @@ public class CityService : BaseService<City>, ICityService
             result.Exception = new ObiException(ErrorMessages.EntityExist(nameof(model.Name)));
             return true;
         }
+        model.Country = await _unitOfWork.CountryRepository.FirstOrDefault(a => a.Id == model.Country.Id);
 
         return false;
     }
 
-    public async Task<Response> DeleteAsync(int id)
-    {
-        var result = new Response();
-        if (!await _unitOfWork.CityRepository.AnyAsync(a => a.Id ==id && a.IsValid))
-        {
-            result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(id));
-            return result;
-        }
-
-        await _unitOfWork.CityRepository.DeleteAsync(id);
-        await _unitOfWork.SaveChangesAsync();
-        return result;
-    }
-
-    public async Task<Response> EditAsync(City model)
-    {
-        var result = new Response();
-        if (!await _unitOfWork.CountryRepository.AnyAsync(a => a.Id ==model.Id && a.IsValid))
-        {
-            result.Exception = new ObiException(ErrorMessages.EntityDoesntExist(model.Id));
-            return result;
-        }
-        if (await ValidateModel(model, result)) return result;
-        model.Country = await _unitOfWork.CountryRepository.FirstOrDefault(a => a.Id == model.Country.Id);
-        await _unitOfWork.CityRepository.UpdateAsync(model);
-        await _unitOfWork.SaveChangesAsync();
-        return result;
-    }
-
-    public async Task<Response<IEnumerable<City>>> GetAllAsync(string search = null)
-    {
-        var result = new Response<IEnumerable<City>>();
-
-        result.Result = await _unitOfWork.CityRepository.WhereAsync(a=>true, a=>a.Country);
-        return result;
-    }
     public async Task<Response<IEnumerable<City>>> GetAllWithoutMetadataAsync(long countryId)
     {
         var result = new Response<IEnumerable<City>>();
@@ -90,10 +45,13 @@ public class CityService : BaseService<City>, ICityService
         result.Result = await _unitOfWork.CityRepository.WhereAsync(a => a.Country.Id == countryId);
         return result;
     }
-    public async Task<Response<City>> GetByIdAsync(int id)
+ 
+
+    protected override List<Expression<Func<City, object>>> DefaultIncludes()
     {
-        var result = new Response<City>();
-        result.Result = await _unitOfWork.CityRepository.FirstOrDefault(a=>a.Id==id,a=>a.Country);
-        return result;
+        return new List<Expression<Func<City, object>>>
+        {
+            a=>a.Country
+        };
     }
 }

@@ -1,0 +1,60 @@
+@model RoadDataViewModel
+
+<input asp-for="Id" hidden />
+<input asp-for="TripId" hidden />
+<input asp-for="Trip" hidden />
+<div class="form-group">
+    <label asp-for="StartingDate" class="control-label"></label>
+    <input asp-for="StartingDate"  class="form-control dateControl" />
+    <span asp-validation-for="StartingDate" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="EndingDate" class="control-label"></label>
+    <input asp-for="EndingDate" class="form-control dateControl" />
+    <span asp-validation-for="EndingDate" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="TotalKM" class="control-label"></label>
+    <input asp-for="TotalKM" class="form-control" />
+    <span asp-validation-for="TotalKM" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Price" class="control-label"></label>
+    <input asp-for="Price" class="form-control" />
+    <span asp-validation-for="Price" class="text-danger"></span>
+</div>
+<div class="form-group CheckboxGroup">
+    <label asp-for="IsExport" class="control-label"></label>
+    <input asp-for="IsExport" class="form-check-inputl" />
+    <span asp-validation-for="IsExport" class="text-danger"></span>
+</div>
+
+<div class="form-group">
+    <label asp-for="StartingLocation" class="control-label"></label>
+    <select asp-for="StartingLocationId" class="form-control selectAdd">
+        <option selected value="@Model.StartingLocationId">@Model.StartingLocation</option>
+    </select>
+    <span asp-validation-for="StartingLocationId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="DestinationLocation" class="control-label"></label>
+    <select asp-for="DestinationLocationId" class="form-control selectAdd">
+        <option selected value="@Model.DestinationLocationId">@Model.DestinationLocation</option>
+    </select>
+    <span asp-validation-for="DestinationLocationId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="TruckBase" class="control-label"></label>
+    <select asp-for="TruckBaseId" class="form-control selectAdd">
+        <option selected value="@Model.TruckBaseId">@Model.TruckBase</option>
+    </select>
+    <span asp-validation-for="TruckBaseId" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="TruckContainer" class="control-label"></label>
+    <select asp-for="TruckContainerId" class="form-control selectAdd">
+        <option selected value="@Model.TruckContainerId">@Model.TruckContainer</option>
+    </select>
+    <span asp-validation-for="TruckContainerId" class="text-danger"></span>
+</div>
+

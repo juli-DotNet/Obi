@@ -452,6 +452,9 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Property<int>("DefaultTruckBaseId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("DefaultTruckContainerId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("EndingDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -479,6 +482,8 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("DefaultTruckBaseId");
+
+                    b.HasIndex("DefaultTruckContainerId");
 
                     b.HasIndex("ModifiedById");
 
@@ -520,6 +525,9 @@ namespace ObiMenagement.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -685,6 +693,9 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("numeric");
 
+                    b.Property<long?>("RoadDataId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("StartingLocationId")
                         .HasColumnType("integer");
 
@@ -706,9 +717,221 @@ namespace ObiMenagement.Infrastructure.Migrations
 
                     b.HasIndex("ModifiedById");
 
+                    b.HasIndex("RoadDataId");
+
                     b.HasIndex("StartingLocationId");
 
                     b.ToTable("RoadClient");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.RoadData", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("DestinationLocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("EndingDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsExport")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("StartingDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("StartingLocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("TotalKM")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TripId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TruckBaseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TruckContainerId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DestinationLocationId");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("StartingLocationId");
+
+                    b.HasIndex("TripId");
+
+                    b.HasIndex("TruckBaseId");
+
+                    b.HasIndex("TruckContainerId");
+
+                    b.ToTable("RoadData");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.RoadExpense", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("ExpenseTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("numeric");
+
+                    b.Property<long?>("RoadDataId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TripId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("ExpenseTypeId");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("RoadDataId");
+
+                    b.HasIndex("TripId");
+
+                    b.ToTable("RoadExpense");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.Trip", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("EndingAmountOfFuel")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("EndingTrucKm")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("ModifiedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("StartingAmountOfFuel")
+                        .HasColumnType("integer");
+
+                    b.Property<long>("StartingTrucKm")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("TotalKM")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("TotalWage")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTime>("TripDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TruckBaseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TruckContainerId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("ModifiedById");
+
+                    b.HasIndex("TruckBaseId");
+
+                    b.HasIndex("TruckContainerId");
+
+                    b.ToTable("Trip");
                 });
 
             modelBuilder.Entity("ObiMenagement.Core.Models.TruckBase", b =>
@@ -977,6 +1200,12 @@ namespace ObiMenagement.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ObiMenagement.Core.Models.TruckContainer", "DefaultTruckContainer")
+                        .WithMany()
+                        .HasForeignKey("DefaultTruckContainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
                         .WithMany()
                         .HasForeignKey("ModifiedById");
@@ -990,6 +1219,8 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("DefaultTruckBase");
+
+                    b.Navigation("DefaultTruckContainer");
 
                     b.Navigation("ModifiedBy");
 
@@ -1016,9 +1247,6 @@ namespace ObiMenagement.Infrastructure.Migrations
 
                             b1.Property<int>("PaymentTypeEnum")
                                 .HasColumnType("integer");
-
-                            b1.Property<decimal>("Price")
-                                .HasColumnType("numeric");
 
                             b1.HasKey("ExpenseTypeId");
 
@@ -1120,6 +1348,10 @@ namespace ObiMenagement.Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ModifiedById");
 
+                    b.HasOne("ObiMenagement.Core.Models.RoadData", null)
+                        .WithMany("Clients")
+                        .HasForeignKey("RoadDataId");
+
                     b.HasOne("ObiMenagement.Core.Models.Location", "StartingLocation")
                         .WithMany()
                         .HasForeignKey("StartingLocationId")
@@ -1137,6 +1369,175 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Navigation("ModifiedBy");
 
                     b.Navigation("StartingLocation");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.RoadData", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.Location", "DestinationLocation")
+                        .WithMany()
+                        .HasForeignKey("DestinationLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.Location", "StartingLocation")
+                        .WithMany()
+                        .HasForeignKey("StartingLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ObiMenagement.Core.Models.Trip", "Trip")
+                        .WithMany("Roads")
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ObiMenagement.Core.Models.TruckBase", "TruckBase")
+                        .WithMany()
+                        .HasForeignKey("TruckBaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ObiMenagement.Core.Models.TruckContainer", "TruckContainer")
+                        .WithMany()
+                        .HasForeignKey("TruckContainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DestinationLocation");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("StartingLocation");
+
+                    b.Navigation("Trip");
+
+                    b.Navigation("TruckBase");
+
+                    b.Navigation("TruckContainer");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.RoadExpense", b =>
+                {
+                    b.HasOne("ObiMenagement.Core.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.ExpenseType", "ExpenseType")
+                        .WithMany()
+                        .HasForeignKey("ExpenseTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.RoadData", "RoadData")
+                        .WithMany("RoadFuels")
+                        .HasForeignKey("RoadDataId");
+
+                    b.HasOne("ObiMenagement.Core.Models.Trip", "Trip")
+                        .WithMany("Expenses")
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("ObiMenagement.Core.Models.Payment", "Payment", b1 =>
+                        {
+                            b1.Property<long>("RoadExpenseId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<int>("CurrencyId")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("PaymentTypeEnum")
+                                .HasColumnType("integer");
+
+                            b1.HasKey("RoadExpenseId");
+
+                            b1.HasIndex("CurrencyId");
+
+                            b1.ToTable("RoadExpense");
+
+                            b1.HasOne("ObiMenagement.Core.Models.Currency", "Currency")
+                                .WithMany()
+                                .HasForeignKey("CurrencyId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.WithOwner()
+                                .HasForeignKey("RoadExpenseId");
+
+                            b1.Navigation("Currency");
+                        });
+
+                    b.Navigation("Country");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("ExpenseType");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("Payment")
+                        .IsRequired();
+
+                    b.Navigation("RoadData");
+
+                    b.Navigation("Trip");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.Trip", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "ModifiedBy")
+                        .WithMany()
+                        .HasForeignKey("ModifiedById");
+
+                    b.HasOne("ObiMenagement.Core.Models.TruckBase", "TruckBase")
+                        .WithMany()
+                        .HasForeignKey("TruckBaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ObiMenagement.Core.Models.TruckContainer", "TruckContainer")
+                        .WithMany()
+                        .HasForeignKey("TruckContainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("ModifiedBy");
+
+                    b.Navigation("TruckBase");
+
+                    b.Navigation("TruckContainer");
                 });
 
             modelBuilder.Entity("ObiMenagement.Core.Models.TruckBase", b =>
@@ -1167,6 +1568,20 @@ namespace ObiMenagement.Infrastructure.Migrations
                     b.Navigation("CreatedBy");
 
                     b.Navigation("ModifiedBy");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.RoadData", b =>
+                {
+                    b.Navigation("Clients");
+
+                    b.Navigation("RoadFuels");
+                });
+
+            modelBuilder.Entity("ObiMenagement.Core.Models.Trip", b =>
+                {
+                    b.Navigation("Expenses");
+
+                    b.Navigation("Roads");
                 });
 #pragma warning restore 612, 618
         }
