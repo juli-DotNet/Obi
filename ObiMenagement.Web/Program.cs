@@ -6,7 +6,7 @@ using ObiMenagement.Core.Services;
 using ObiMenagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddApplicationInsightsTelemetry();
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ObiManagementDbContext>(options =>
