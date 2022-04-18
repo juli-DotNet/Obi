@@ -84,12 +84,12 @@ public class RoadExpenseService : LongBaseService<RoadExpense>, IRoadExpenseServ
         }
         if (model.Quantity == 0)
         {
-            result.Exception = new ObiException(ErrorMessages.BiggernThan(nameof(model.Quantity)));
+            result.Exception = new ObiException(ErrorMessages.BiggerThan(nameof(model.Quantity)));
             return true;
         }
         if (model.Price == 0)
         {
-            result.Exception = new ObiException(ErrorMessages.BiggernThan(nameof(model.Price)));
+            result.Exception = new ObiException(ErrorMessages.BiggerThan(nameof(model.Price)));
             return true;
         }
         if (model.Trip is null || model.Trip.Id == 0)
